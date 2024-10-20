@@ -1,15 +1,3 @@
-[system]
-host = "0.0.0.0"
-port = 7777
-log_level = "dev"
-
-[logger]
-level = "info"
-prefix = "[gvb]"
-director = "log"
-show_line = true
-log_in_console = true
-
 [mysql]
 host = "127.0.0.1"
 port = 7770
@@ -17,3 +5,17 @@ db = "gvb"
 user = "root"
 password = "root"
 log_level = "dev"
+[logger]
+level = "info"
+prefix = "[gvb]"
+director = "log"
+show_line = true
+log_in_console = true
+[system]
+host = "0.0.0.0"
+port = 7777
+log_level = "dev"
+
+
+
+
