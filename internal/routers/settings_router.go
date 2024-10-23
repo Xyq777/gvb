@@ -7,5 +7,6 @@ import (
 func (r *RouterGroup) SettingsRouter() {
 	group := r.Group("/settings")
 	settingsApi := v1.ApiGroupApp.SettingsApi
-	group.GET("/ping", settingsApi.SettingsInfoView)
+	group.GET("", settingsApi.SettingsInfoView)
+	group.PUT("", settingsApi.SettingsUpdate)
 }
