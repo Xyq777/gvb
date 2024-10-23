@@ -40,7 +40,7 @@ func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 		b = &bytes.Buffer{}
 	}
 
-	log := global.Config.Logger
+	log := global.Config.System.Logger
 
 	//自定义日期格式
 	timestamp := entry.Time.Format("2006-01-02 15:04:05")
@@ -57,11 +57,11 @@ func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 }
 
 func InitLogger() *logrus.Logger {
-	mLog := logrus.New()                                //新建一个实例
-	mLog.SetOutput(os.Stdout)                           //设置输出类型
-	mLog.SetReportCaller(global.Config.Logger.ShowLine) //开启返回函数名和行号
-	mLog.SetFormatter(&LogFormatter{})                  //设置自己定义的Formatter
-	level, err := logrus.ParseLevel(global.Config.Logger.Level)
+	mLog := logrus.New()                                       //新建一个实例
+	mLog.SetOutput(os.Stdout)                                  //设置输出类型
+	mLog.SetReportCaller(global.Config.System.Logger.ShowLine) //开启返回函数名和行号
+	mLog.SetFormatter(&LogFormatter{})                         //设置自己定义的Formatter
+	level, err := logrus.ParseLevel(global.Config.System.Logger.Level)
 	if err != nil {
 		level = logrus.InfoLevel
 	}
@@ -72,10 +72,10 @@ func InitLogger() *logrus.Logger {
 
 func InitDefaultLogger() {
 	// 全局log
-	logrus.SetOutput(os.Stdout)                           //设置输出类型
-	logrus.SetReportCaller(global.Config.Logger.ShowLine) //开启返回函数名和行号
-	logrus.SetFormatter(&LogFormatter{})                  //设置自己定义的Formatter
-	level, err := logrus.ParseLevel(global.Config.Logger.Level)
+	logrus.SetOutput(os.Stdout)                                  //设置输出类型
+	logrus.SetReportCaller(global.Config.System.Logger.ShowLine) //开启返回函数名和行号
+	logrus.SetFormatter(&LogFormatter{})                         //设置自己定义的Formatter
+	level, err := logrus.ParseLevel(global.Config.System.Logger.Level)
 	if err != nil {
 		level = logrus.InfoLevel
 	}

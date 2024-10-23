@@ -1,28 +1,46 @@
 package core
 
 import (
-	"fmt"
 	"github.com/BurntSushi/toml"
 	"github.com/Mmx233/EnvConfig"
 	"gvb/config"
 	"gvb/internal/global"
+	"os"
 )
 
-var Conf config.Config
+const ConfigFile = "config.toml"
 
 func InitConf() {
-	const ConfigFile = "config.toml"
-	_, err := toml.DecodeFile(ConfigFile, &Conf)
+	c := &config.Config{}
+	initSystemConfWithEnv(c)
+	initCustomWithToml(c)
+	global.Config = c
+}
+func initSystemConfWithEnv(c *config.Config) {
+	// 使用自定义的 EnvConfig 库从环境变量加载配置
+	EnvConfig.Load("MYSQL_", &c.System.Mysql)   // 加载 MySQL 环境变量
+	EnvConfig.Load("LOGGER_", &c.System.Logger) // 加载 Logger 环境变量
+	EnvConfig.Load("SYSTEM_", &c.System.App)
+	EnvConfig.Load("JWT_", &c.System.Jwt)
+}
+func initCustomWithToml(c *config.Config) {
+
+	_, err := toml.DecodeFile(ConfigFile, &c.Custom)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(Conf)
 }
-func InitConfWithEnv() {
-	c := &config.Config{}
-	// 使用自定义的 EnvConfig 库从环境变量加载配置
-	EnvConfig.Load("MYSQL_", &c.Mysql)   // 加载 MySQL 环境变量
-	EnvConfig.Load("LOGGER_", &c.Logger) // 加载 Logger 环境变量
-	EnvConfig.Load("SYSTEM_", &c.System)
-	global.Config = c
+func SetToml() error {
+	file, err := os.OpenFile(ConfigFile, os.O_WRONLY|os.O_TRUNC, 0644)
+	if err != nil {
+		global.Log.Errorln(err)
+		return err
+	}
+	encoder := toml.NewEncoder(file)
+	err = encoder.Encode(global.Config.Custom)
+	if err != nil {
+		global.Log.Errorln(err)
+		return err
+	}
+	return nil
 }

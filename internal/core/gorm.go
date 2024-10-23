@@ -11,14 +11,14 @@ import (
 )
 
 func InitGorm() *gorm.DB {
-	if global.Config.Mysql.Host == "" {
+	if global.Config.System.Mysql.Host == "" {
 		log.Println("未配置mysql，取消gorm连接")
 		return nil
 	}
-	dsn := global.Config.Mysql.DSN()
+	dsn := global.Config.System.Mysql.DSN()
 
 	var mysqlLogger logger.Interface
-	if global.Config.System.LogLevel == "debug" {
+	if global.Config.System.App.LogLevel == "debug" {
 		// 开发环境显示所有的sql
 
 		mysqlLogger = logger.Default.LogMode(logger.Info)
