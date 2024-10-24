@@ -15,22 +15,25 @@
   bilibili_url = "_"
   gitee_url = "_"
   github_url = "github/Xyq777"
+
 [qq]
-app-id= "xx"
-key= "xx"
-redirect= "http://xx.xx.com/login?flag=qq"
-[email]
-host="smtp.qq.com"
-port= 465
-user= "xxx@qq.com"
-password= ""
-default_from_email= ""
-use-ssl= ""
-user-tls= ""
+  app_id = ""
+  key = "xx"
+  redirect = "http://xx.xx.com/login?flag=qq"
+
 [qi_niu]
-access_key= ""
-secret_key=  ""
-bucket= ""
-cdn=""
-zone= ""
-size= 5
+  access_key = ""
+  secret_key = ""
+  bucket = ""
+  cdn = ""
+  zone = ""
+  size = 5.0
+
+[email]
+  host = "smtp.qq.com"
+  port = 465
+  user = "xxx@qq.com"
+  password = ""
+  default_from_email = ""
+  use_ssl = false
+  user_tls = false

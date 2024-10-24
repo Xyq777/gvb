@@ -3,9 +3,9 @@ package custom
 import "fmt"
 
 type QQ struct {
-	AppID    string `json:"app_id" toml:"app_id"`
-	Key      string `json:"key" toml:"key"`
-	Redirect string `json:"redirect" toml:"redirect"` // 登录之后的回调地址
+	AppID    string `json:"app_id" toml:"app_id" binding:"required"`
+	Key      string `json:"key" toml:"key" binding:"required"`
+	Redirect string `json:"redirect" toml:"redirect" binding:"required"` // 登录之后的回调地址
 }
 
 func (q QQ) GetPath() string {
