@@ -22,6 +22,7 @@
   redirect = "http://xx.xx.com/login?flag=qq"
 
 [qi_niu]
+  enabled = false
   access_key = ""
   secret_key = ""
   bucket = ""

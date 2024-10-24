@@ -1,6 +1,7 @@
 package custom
 
 type QiNiu struct {
+	Enabled   bool    `json:"enabled" toml:"enabled" binding:"required"`
 	AccessKey string  `json:"access_key" toml:"access_key" binding:"required"`
 	SecretKey string  `json:"secret_key" toml:"secret_key" binding:"required"`
 	Bucket    string  `json:"bucket" toml:"bucket" binding:"required"` // 存储桶的名字

@@ -22,6 +22,7 @@ func initSystemConfWithEnv(c *config.Config) {
 	EnvConfig.Load("LOGGER_", &c.System.Logger) // 加载 Logger 环境变量
 	EnvConfig.Load("SYSTEM_", &c.System.App)
 	EnvConfig.Load("JWT_", &c.System.Jwt)
+	EnvConfig.Load("UPLOAD_", &c.System.Upload)
 }
 func initCustomWithToml(c *config.Config) {
 

@@ -1,7 +1,6 @@
 package settings_api
 
 import (
-	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gvb/config/custom"
@@ -16,7 +15,7 @@ func (a *SettingsApi) SettingsUpdate(c *gin.Context) {
 		var InfoModel custom.SiteInfo
 		err := c.ShouldBind(&InfoModel)
 		if err != nil {
-			res.FAIL(res.InvalidParams, "参数错误", err, c)
+			res.FAIL(res.InvalidParams, "参数错误", c, err)
 			return
 		}
 
@@ -24,7 +23,7 @@ func (a *SettingsApi) SettingsUpdate(c *gin.Context) {
 		var InfoModel custom.Email
 		err := c.ShouldBind(&InfoModel)
 		if err != nil {
-			res.FAIL(res.InvalidParams, "参数错误", err, c)
+			res.FAIL(res.InvalidParams, "参数错误", c, err)
 			return
 		}
 
@@ -33,7 +32,7 @@ func (a *SettingsApi) SettingsUpdate(c *gin.Context) {
 		var InfoModel custom.QQ
 		err := c.ShouldBind(&InfoModel)
 		if err != nil {
-			res.FAIL(res.InvalidParams, "参数错误", err, c)
+			res.FAIL(res.InvalidParams, "参数错误", c, err)
 			return
 		}
 		fmt.Println(InfoModel)
@@ -42,18 +41,18 @@ func (a *SettingsApi) SettingsUpdate(c *gin.Context) {
 		var InfoModel custom.QiNiu
 		err := c.ShouldBind(&InfoModel)
 		if err != nil {
-			res.FAIL(res.InvalidParams, "参数错误", err, c)
+			res.FAIL(res.InvalidParams, "参数错误", c, err)
 			return
 		}
 
 	default:
-		res.FAIL(res.InvalidParams, "错误的路径参数", errors.New(""), c)
+		res.FAIL(res.InvalidParams, "错误的路径参数", c)
 		return
 	}
 
 	err := core.SetToml()
 	if err != nil {
-		res.FAIL(res.FailedRewriteToml, "更新配置文件失败", err, c)
+		res.FAIL(res.FailedRewriteToml, "更新配置文件失败", c, err)
 	}
 	res.OK(struct{}{}, c)
 }

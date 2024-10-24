@@ -5,4 +5,5 @@ type System struct {
 	Logger Logger
 	Mysql  Mysql
 	Jwt    Jwt
+	Upload Upload
 }
