@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gvb/internal/global"
 	"gvb/internal/models/res"
+	"gvb/tools/validator"
 	"io/fs"
 	"os"
 	"path"
@@ -15,6 +16,20 @@ type FileUploadResponse struct {
 	IsSuccess bool
 	Msg       string
 }
+
+var (
+	// WhiteImageList 图片上传的白名单
+	WhiteImageList = []string{
+		".jpg",
+		".png",
+		".jpeg",
+		".ico",
+		".tiff",
+		".gif",
+		".svg",
+		".webp",
+	}
+)
 
 const KB = 1024
 const MB = KB * KB
@@ -45,6 +60,19 @@ func (a ImagesApi) ImagesUploadAPI(c *gin.Context) {
 	resList := make([]FileUploadResponse, 0)
 	for _, fileHeader := range files {
 		//检查文件是否合规
+		//检查后缀
+		ext := path.Ext(fileHeader.Filename)
+		if !validator.InList(ext, WhiteImageList) {
+			resList = append(resList, FileUploadResponse{
+				FileName:  fileHeader.Filename,
+				IsSuccess: false,
+				Msg:       "图片格式错误",
+			})
+			hasFail = true
+			continue
+		}
+
+		//检查大小
 		size := float64(fileHeader.Size) / float64(1*MB)
 		if size >= float64(global.Config.System.Upload.Size) {
 			resList = append(resList, FileUploadResponse{
