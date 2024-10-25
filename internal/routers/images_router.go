@@ -8,6 +8,8 @@ func (r *RouterGroup) ImagesRouter() {
 	{
 		group.POST("", imagesApi.ImagesUploadAPI)
 		group.POST("/list", imagesApi.ImageListApi)
+		group.DELETE("", imagesApi.ImageDeleteApi)
+		group.PUT("", imagesApi.ImageRenameApi)
 	}
 
 }
