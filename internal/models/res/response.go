@@ -11,6 +11,10 @@ type Response struct {
 	Data any    `json:"data"`
 	Msg  string `json:"msg"`
 }
+type List struct {
+	ModelList any `json:"model_list"`
+	Count     int `json:"count"`
+}
 
 func Result(code ErrorCode, data any, msg string, c *gin.Context) {
 	c.JSON(http.StatusOK, Response{
