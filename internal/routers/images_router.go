@@ -7,6 +7,7 @@ func (r *RouterGroup) ImagesRouter() {
 	imagesApi := v1.ApiGroupApp.ImagesApi
 	{
 		group.POST("", imagesApi.ImagesUploadAPI)
+		group.POST("/list", imagesApi.ImageListApi)
 	}
 
 }

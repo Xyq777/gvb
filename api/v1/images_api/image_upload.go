@@ -122,7 +122,6 @@ func (a ImagesApi) ImagesUploadAPI(c *gin.Context) {
 	}
 
 	if hasFail {
-		fmt.Print(resList)
 		res.FAIL(res.InvalidParams, "图片上传错误", c, resList)
 		return
 	}
