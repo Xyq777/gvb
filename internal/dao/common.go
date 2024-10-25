@@ -10,7 +10,10 @@ func GetList[T any](model T, page *req.Page) (list []T, count int, err error) {
 	if offset < 0 {
 		offset = 0
 	}
-	result := global.Db.Limit(page.Limit).Offset(offset).Find(&list)
+	if page.Sort == "" {
+		page.Sort = "created_at desc"
+	}
+	result := global.Db.Limit(page.Limit).Order(page.Sort).Offset(offset).Find(&list)
 	err = result.Error
 	count = int(result.RowsAffected)
 	return list, count, err
