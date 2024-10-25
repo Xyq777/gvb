@@ -36,9 +36,14 @@ func FAIL(code ErrorCode, msg string, c *gin.Context, option ...any) {
 	}
 	if len(option) == 1 {
 		f, ok := option[0].(error)
-		if isDev() && ok {
-			FailWithOrigin(code, msg, f, c)
+		if ok {
+			if isDev() {
+				FailWithOrigin(code, msg, f, c)
+				return
+			}
+			Result(code, struct{}{}, msg, c)
 			return
+
 		}
 		if !ok {
 			Result(code, option[0], msg, c)
@@ -65,14 +70,14 @@ func FAIL(code ErrorCode, msg string, c *gin.Context, option ...any) {
 			return
 		}
 		if ok0 && ok1 {
-			global.Log.Warnln("FAIL函数参数错误")
+			global.Log.Panicf("FAIL函数参数错误")
 		}
 	}
-	global.Log.Warnln("FAIL函数参数错误")
+	global.Log.Panicf("FAIL函数参数错误")
 }
 func FailWithOrigin(code ErrorCode, msg string, err error, c *gin.Context) {
 	Result(code, struct{}{}, msg+err.Error(), c)
 }
 func isDev() bool {
-	return global.Config.System.App.LogLevel == "dev"
+	return global.Config.System.App.LogLevel == "debug"
 }
