@@ -9,4 +9,5 @@ const (
 	UploadFileSizeExceedsLimit ErrorCode = 40005
 	FailedRewriteToml          ErrorCode = 50000
 	UploadFileFailed           ErrorCode = 50001
+	FailedGetImageList         ErrorCode = 50002
 )
