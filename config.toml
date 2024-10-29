@@ -22,12 +22,12 @@
   redirect = "http://xx.xx.com/login?flag=qq"
 
 [qi_niu]
-  enabled = false
-  access_key = ""
-  secret_key = ""
-  bucket = ""
+  enabled = true
+  secret_key = "IwSKOq3wVR0usQFwIcFJkkky4od6HgH7yVmpyx5R"
+  access_key = "RmPwiRgS-5E5uExGbq5qWgygyAnY60AI6KI9R767"
+  bucket = "gvb-image"
   cdn = ""
-  zone = ""
+  zone = "z1"
   size = 5.0
 
 [email]

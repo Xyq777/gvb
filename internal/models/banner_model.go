@@ -4,6 +4,7 @@ import (
 	"gorm.io/gorm"
 	"gvb/internal/global"
 	"gvb/internal/models/ctype"
+	"gvb/internal/tools/qiniu"
 	"os"
 )
 
@@ -17,10 +18,22 @@ type BannerModel struct {
 }
 
 func (b *BannerModel) BeforeDelete(tx *gorm.DB) error {
-	err := os.Remove(b.Path)
-	if err != nil {
-		global.Log.Error(err)
-		return err
+	switch b.ImageType {
+	case 1:
+		err := os.Remove(b.Path)
+		if err != nil {
+			global.Log.Error(err)
+			return err
+		}
+	case 2:
+		err := qiniu.DeleteImage(b.Name)
+		if err != nil {
+			return err
+		}
+
 	}
+
 	return nil
 }
+
+//TODO beforeUpdate

@@ -5,7 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"gvb/internal/global"
 	"gvb/internal/models"
+	"gvb/internal/models/ctype"
 	"gvb/internal/models/res"
+	"gvb/internal/tools/qiniu"
 	"gvb/tools/Encryptor"
 	"gvb/tools/validator"
 	"io"
@@ -47,9 +49,10 @@ func (a ImagesApi) ImagesUploadAPI(c *gin.Context) {
 		res.FAIL(res.InvalidParams, "参数错误", c, err)
 		return
 	}
-	files, ok := form.File["images"]
-	if !ok {
-		res.FAIL(res.InvalidParams, "未找到images", c, err)
+	files, ok1 := form.File["images"]
+	uploadType, ok2 := form.Value["type"]
+	if !ok1 || !ok2 {
+		res.FAIL(res.InvalidParams, "请求字段错误", c, err)
 	}
 
 	//判断文件路径是否存在
@@ -106,17 +109,38 @@ func (a ImagesApi) ImagesUploadAPI(c *gin.Context) {
 		}
 
 		//上传
-		filePath := path.Join(basePath, fileHeader.Filename)
-		err = c.SaveUploadedFile(fileHeader, filePath)
-		if err != nil {
-			appendFailedResList(&resList, fileHeader.Filename, "图片保存错误")
-			global.Log.Errorln(err)
+		//上传到七牛云
+		var filePath string
+		var modelImgaeType ctype.ImageType
+		switch uploadType[0] {
+		case "qiniu":
+			modelImgaeType = 2
+			filePath, err = qiniu.UploadImage(fileByte, fileHeader.Filename, "gvb")
+			if err != nil {
+				appendFailedResList(&resList, fileHeader.Filename, "上传七牛失败")
+				continue
+			}
+		case "local":
+			modelImgaeType = 1
+			filePath = path.Join(basePath, fileHeader.Filename)
+			err = c.SaveUploadedFile(fileHeader, filePath)
+			if err != nil {
+				appendFailedResList(&resList, fileHeader.Filename, "图片保存错误")
+				global.Log.Errorln(err)
+				continue
+			}
 		}
-		global.Db.Create(&models.BannerModel{
-			Path: filePath,
-			Hash: fileHash,
-			Name: fileHeader.Filename,
-		})
+		//入库
+		err = global.Db.Create(&models.BannerModel{
+			Path:      filePath,
+			Hash:      fileHash,
+			Name:      fileHeader.Filename,
+			ImageType: modelImgaeType,
+		}).Error
+		if err != nil {
+			appendFailedResList(&resList, fileHeader.Filename, "图片入库错误")
+			continue
+		}
 		appendSuccessResList(&resList, filePath, "图片上传成功")
 
 	}
