@@ -12,4 +12,5 @@ const (
 	UploadFileFailed           ErrorCode = 50001
 	FailedGetImageList         ErrorCode = 50002
 	FailedDeleteImages         ErrorCode = 50003
+	FailedCreateDir            ErrorCode = 50004
 )
