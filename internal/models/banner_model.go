@@ -26,7 +26,7 @@ func (b *BannerModel) BeforeDelete(tx *gorm.DB) error {
 			return err
 		}
 	case 2:
-		err := qiniu.DeleteImage(b.Name)
+		err := qiniu.DeleteImage(b.Path)
 		if err != nil {
 			return err
 		}

@@ -51,9 +51,9 @@ func getCfg(q custom.QiNiu) storage.Config {
 	return cfg
 
 }
-func DeleteImage(imageName string) error {
+func DeleteImage(key string) error {
 	bucket := getBucket(global.Config.Custom.QiNiu)
-	err := bucket.Object(imageName).Delete().Call(context.Background())
+	err := bucket.Object(key).Delete().Call(context.Background())
 	if err != nil {
 		global.Log.Error(err)
 		return err
