@@ -2,31 +2,16 @@ package menus_api
 
 import (
 	"github.com/gin-gonic/gin"
+	"gvb/internal/dao"
 	"gvb/internal/global"
 	"gvb/internal/models"
-	"gvb/internal/models/ctype"
+	"gvb/internal/models/req"
 	"gvb/internal/models/res"
 )
 
-type ImageSort struct {
-	ImageID uint `json:"image_id"`
-	Sort    int  `json:"sort"`
-}
-
-type MenuRequest struct {
-	MenuTitle     string      `json:"menu_title" binding:"required" msg:"请完善菜单名称"`
-	MenuTitleEn   string      `json:"menu_title_en" binding:"required" msg:"请完善菜单英文名称"`
-	Slogan        string      `json:"slogan"`
-	Abstract      ctype.Array `json:"abstract"`
-	AbstractTime  int         `json:"abstract_time"`                         // 切换的时间，单位秒
-	BannerTime    int         `json:"banner_time"`                           // 切换的时间，单位秒
-	Sort          int         `json:"sort" binding:"required" msg:"请输入菜单序号"` // 菜单的序号
-	ImageSortList []ImageSort `json:"image_sort_list"`                       // 具体图片的顺序
-}
-
 func (a *MenusApi) MenuCreateView(c *gin.Context) {
-	var cr MenuRequest
-	err := c.ShouldBindJSON(&cr)
+	var menuReq req.MenuRequest
+	err := c.ShouldBindJSON(&menuReq)
 	if err != nil {
 		res.FAIL(res.InvalidParams, res.ErrorMsg(res.InvalidParams), c, err)
 
@@ -34,46 +19,34 @@ func (a *MenusApi) MenuCreateView(c *gin.Context) {
 	}
 
 	// 重复值判断
-
-	// 创建banner数据入库
-	menuModel := models.MenuModel{
-		MenuTitle:    cr.MenuTitle,
-		MenuTitleEn:  cr.MenuTitleEn,
-		Slogan:       cr.Slogan,
-		Abstract:     cr.Abstract,
-		AbstractTime: cr.AbstractTime,
-		BannerTime:   cr.BannerTime,
-		Sort:         cr.Sort,
-	}
-
-	err = global.Db.Create(&menuModel).Error
+	menuRes, err := dao.CreateMenu(&menuReq)
 
 	if err != nil {
 		global.Log.Error(err)
 		res.FAIL(res.DatabaseFailedCreate, res.ErrorMsg(res.DatabaseFailedCreate), c, err)
 		return
 	}
-	if len(cr.ImageSortList) == 0 {
+	if len(menuReq.ImageSortList) == 0 {
 		res.OK(struct{}{}, c)
 		return
 	}
 
 	var menuBannerList []models.MenuBannerModel
 
-	for _, sort := range cr.ImageSortList {
+	for _, sort := range menuReq.ImageSortList {
 		// 这里也得判断image_id是否真正有这张图片
 		menuBannerList = append(menuBannerList, models.MenuBannerModel{
-			MenuID:   menuModel.ID,
+			MenuID:   menuRes.MenuID,
 			BannerID: sort.ImageID,
 			Sort:     sort.Sort,
 		})
 	}
 	// 给第三张表入库
-	err = global.Db.Create(&menuBannerList).Error
+	err = dao.CreateMenuBanner(menuBannerList)
 	if err != nil {
 		global.Log.Error(err)
 		res.FAIL(res.DatabaseFailedCreate, "菜单图片关联失败", c)
 		return
 	}
-	res.OK(struct{}{}, c)
+	res.OK(menuRes, c)
 }
