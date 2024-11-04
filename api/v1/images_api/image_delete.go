@@ -10,20 +10,20 @@ import (
 )
 
 func (a ImagesApi) ImageDeleteApi(c *gin.Context) {
-	var deleteImagesID []req.DeleteReq
-	err := c.ShouldBind(&deleteImagesID)
+	var deleteImagesReq []req.DeleteReq
+	err := c.ShouldBind(&deleteImagesReq)
 
 	if err != nil {
 		res.FAIL(res.InvalidParams, "参数错误", c, err)
 		return
 	}
-	IDList := req.GetIDList(deleteImagesID)
-	imageList, count, err := dao.FindWithIDs(models.BannerModel{}, IDList)
+	var deleteReqList req.DeleteReqList = deleteImagesReq
+	imageList, count, err := dao.FindWithIDs(models.BannerModel{}, deleteReqList)
 	if err != nil {
 		res.FAIL(res.FailedGetImageList, "数据库查询失败", c, err)
 		return
 	}
-	if count != len(IDList) {
+	if count != len(deleteImagesReq) {
 		res.FAIL(res.NotFoundImages, "图片不存在", c, err)
 		return
 	}
@@ -32,6 +32,7 @@ func (a ImagesApi) ImageDeleteApi(c *gin.Context) {
 		res.FAIL(res.FailedDeleteImages, "删除图片失败", c, err)
 		return
 	}
-	res.OK(IDList, c)
+
+	res.OK(deleteReqList, c)
 
 }

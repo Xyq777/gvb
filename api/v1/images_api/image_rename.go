@@ -14,7 +14,7 @@ func (a ImagesApi) ImageRenameApi(c *gin.Context) {
 		res.FAIL(res.InvalidParams, "参数错误", c, err)
 		return
 	}
-	image, err := dao.UpdateImage(updateReq.ID, updateReq.ImageName)
+	image, err := dao.UpdateImage(updateReq)
 	if err != nil {
 		res.FAIL(res.InvalidParams, "修改失败", c, err)
 		return

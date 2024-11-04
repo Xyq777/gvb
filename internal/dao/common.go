@@ -18,10 +18,16 @@ func GetList[T any](model T, page *req.Page) (list []T, count int, err error) {
 	count, err = getErrorAndCount(res)
 	return list, count, err
 }
-func FindWithIDs[T any](model T, IDList []uint) (list []T, count int, err error) {
-	res := global.Db.Find(&list, IDList)
+func FindWithIDs[T any](model T, IDListProvider req.IDListProvider) (list []T, count int, err error) {
+	res := global.Db.Find(&list, IDListProvider.GetIDList())
 	count, err = getErrorAndCount(res)
 	return list, count, err
+
+}
+func FindWithID[T any](model T, ID uint) (resModel *T, count int, err error) {
+	res := global.Db.Find(&resModel, ID)
+	count, err = getErrorAndCount(res)
+	return resModel, count, err
 
 }
 func getErrorAndCount(res *gorm.DB) (int, error) {

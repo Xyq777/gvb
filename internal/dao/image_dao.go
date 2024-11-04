@@ -4,19 +4,20 @@ import (
 	"errors"
 	"gvb/internal/global"
 	"gvb/internal/models"
+	"gvb/internal/models/req"
 )
 
-func UpdateImage(ID uint, name string) (*models.BannerModel, error) {
-	image, count, err := FindWithIDs(models.BannerModel{}, []uint{ID})
+func UpdateImage(req req.UpdateImageNameReq) (*models.BannerModel, error) {
+	image, count, err := FindWithID(models.BannerModel{}, req.ID)
 	if count == 0 {
 		return nil, errors.New("图片不存在")
 	}
 	if err != nil {
 		return nil, err
 	}
-	err = global.Db.Model(&image).Update("name", name).Error
+	err = global.Db.Model(&image).Update("name", req.ImageName).Error
 	if err != nil {
 		return nil, err
 	}
-	return &image[0], nil
+	return image, nil
 }
