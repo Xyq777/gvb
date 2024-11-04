@@ -7,4 +7,5 @@ func (r *RouterGroup) MenusRouter() {
 	menusApi := v1.ApiGroupApp.MenusApi
 	group.POST("", menusApi.MenuCreateView)
 	group.GET("", menusApi.MenuListView)
+	group.PUT("/:id", menusApi.MenuUpdateAPi)
 }

@@ -2,10 +2,12 @@ package dao
 
 import (
 	"errors"
+	"gorm.io/gorm"
 	"gvb/internal/global"
 	"gvb/internal/models"
 	"gvb/internal/models/req"
 	"gvb/internal/models/res"
+	"strconv"
 )
 
 func CreateMenu(menu *req.MenuRequest) (*res.MenuResponse, error) {
@@ -34,9 +36,9 @@ func CreateMenu(menu *req.MenuRequest) (*res.MenuResponse, error) {
 func CreateMenuBanner(menuBannerList []models.MenuBannerModel) error {
 	//检查banner是否存在
 	for _, menuBanner := range menuBannerList {
-		_, count, err := FindWithIDs(models.BannerModel{}, []uint{menuBanner.BannerID})
+		_, count, err := FindWithID(models.BannerModel{}, menuBanner.BannerID)
 		if count == 0 {
-			return errors.New("图片不存在")
+			return errors.New(strconv.Itoa(int(menuBanner.BannerID)) + "图片不存在")
 		}
 		if err != nil {
 			return err
@@ -57,5 +59,27 @@ func ListMenus(limit int) (menuList []models.MenuModel, err error) {
 	}
 
 	return menuList, nil
+
+}
+func UpdateMenu(ID uint, menu *req.MenuRequest) (*res.MenuResponse, error) {
+	menuModel := models.MenuModel{
+		Model:        gorm.Model{ID: ID},
+		MenuTitle:    menu.MenuTitle,
+		MenuTitleEn:  menu.MenuTitleEn,
+		Slogan:       menu.Slogan,
+		Abstract:     menu.Abstract,
+		AbstractTime: menu.AbstractTime,
+		BannerTime:   menu.BannerTime,
+		Sort:         menu.Sort,
+	}
+	err := global.Db.Model(&menuModel).Where("ID = ?", menuModel.ID).Updates(&menuModel).Error
+	if err != nil {
+		global.Log.Error(err)
+		return nil, err
+	}
+	return &res.MenuResponse{
+		MenuTitle: menuModel.MenuTitle,
+		MenuID:    menuModel.ID,
+	}, nil
 
 }
