@@ -13,12 +13,15 @@ const (
 	FailedGetImageList         ErrorCode = 50002
 	FailedDeleteImages         ErrorCode = 50003
 	FailedCreateDir            ErrorCode = 50004
-	DatabaseFailedCreate       ErrorCode = iota
+	DatabaseOperateError       ErrorCode = 50005
+	DatabaseFailedCreate       ErrorCode = 50006
 )
 
 var codeToMsg = map[ErrorCode]string{
+	NotFound:             "资源不存在",
 	InvalidParams:        "参数错误",
 	DatabaseFailedCreate: "数据库创建操作失败",
+	DatabaseOperateError: "数据库操作失败",
 }
 
 func ErrorMsg(code ErrorCode) string {
