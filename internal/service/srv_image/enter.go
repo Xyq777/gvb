@@ -1,4 +1,4 @@
-package image_srv
+package srv_image
 
 type ImageSrv struct {
 }

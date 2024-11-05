@@ -13,11 +13,3 @@ func (l DeleteReqList) GetIDList() []uint {
 	}
 	return IDList
 }
-func GetIDList(deleteReq []DeleteReq) []uint {
-	var idList []uint
-	for _, v := range deleteReq {
-		idList = append(idList, v.ID)
-	}
-	return idList
-
-}
