@@ -3,7 +3,7 @@ package dao
 import (
 	"gorm.io/gorm"
 	"gvb/internal/global"
-	"gvb/internal/models/req"
+	"gvb/internal/models/serializition/req"
 )
 
 func GetList[T any](model T, page *req.Page) (list []T, count int, err error) {

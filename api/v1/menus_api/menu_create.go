@@ -2,18 +2,19 @@ package menus_api
 
 import (
 	"github.com/gin-gonic/gin"
+	"gvb/internal/callback"
 	"gvb/internal/dao"
 	"gvb/internal/global"
 	"gvb/internal/models"
-	"gvb/internal/models/req"
-	"gvb/internal/models/res"
+	"gvb/internal/models/serializition/req"
+	"gvb/internal/models/serializition/res"
 )
 
 func (a *MenusApi) MenuCreateView(c *gin.Context) {
 	var menuReq req.MenuRequest
 	err := c.ShouldBindJSON(&menuReq)
 	if err != nil {
-		res.FAIL(res.InvalidParams, res.ErrorMsg(res.InvalidParams), c, err)
+		callback.FAIL(res.InvalidParams, res.CodeMsg(res.InvalidParams), c, err)
 
 		return
 	}
@@ -23,11 +24,11 @@ func (a *MenusApi) MenuCreateView(c *gin.Context) {
 
 	if err != nil {
 		global.Log.Error(err)
-		res.FAIL(res.DatabaseFailedCreate, res.ErrorMsg(res.DatabaseFailedCreate), c, err)
+		callback.FAIL(res.DatabaseFailedCreate, res.CodeMsg(res.DatabaseFailedCreate), c, err)
 		return
 	}
 	if len(menuReq.ImageSortList) == 0 {
-		res.OK(struct{}{}, c)
+		callback.OK(struct{}{}, c)
 		return
 	}
 
@@ -45,8 +46,8 @@ func (a *MenusApi) MenuCreateView(c *gin.Context) {
 	err = dao.CreateMenuBanner(menuBannerList)
 	if err != nil {
 		global.Log.Error(err)
-		res.FAIL(res.DatabaseFailedCreate, "菜单图片关联失败", c)
+		callback.FAIL(res.DatabaseFailedCreate, "菜单图片关联失败", c)
 		return
 	}
-	res.OK(menuRes, c)
+	callback.OK(menuRes, c)
 }

@@ -15,18 +15,18 @@ const (
 	FailedCreateDir            ErrorCode = 50004
 	DatabaseOperateError       ErrorCode = 50005
 	DatabaseFailedCreate       ErrorCode = 50006
+	DatabaseMenuFailedDelete   ErrorCode = 50007
 )
 
 var codeToMsg = map[ErrorCode]string{
-	NotFound:             "资源不存在",
-	InvalidParams:        "参数错误",
-	DatabaseFailedCreate: "数据库创建操作失败",
-	DatabaseOperateError: "数据库操作失败",
+	Success:                  "操作成功",
+	NotFound:                 "资源不存在",
+	InvalidParams:            "参数错误",
+	DatabaseFailedCreate:     "数据库创建操作失败",
+	DatabaseOperateError:     "数据库操作失败",
+	DatabaseMenuFailedDelete: "数据库菜单删除失败",
 }
 
-func ErrorMsg(code ErrorCode) string {
+func CodeMsg(code ErrorCode) string {
 	return codeToMsg[code]
-}
-func CodeAndMsg(code ErrorCode) (ErrorCode, string) {
-	return code, codeToMsg[code]
 }

@@ -1,35 +1,23 @@
-package res
+package callback
 
 import (
 	"github.com/gin-gonic/gin"
 	"gvb/internal/global"
+	"gvb/internal/models/serializition/res"
 	"net/http"
 )
 
-type Response struct {
-	Code int    `json:"code"`
-	Data any    `json:"data"`
-	Msg  string `json:"msg"`
-}
-type List struct {
-	ModelList any `json:"model_list"`
-	Count     int `json:"count"`
-}
-
-func Result(code ErrorCode, data any, msg string, c *gin.Context) {
-	c.JSON(http.StatusOK, Response{
+func Result(code res.ErrorCode, data any, msg string, c *gin.Context) {
+	c.JSON(http.StatusOK, res.Response{
 		Code: code,
 		Data: data,
 		Msg:  msg,
 	})
 }
 func OK(data any, c *gin.Context) {
-	Result(Success, data, "操作成功", c)
+	Result(res.Success, data, "操作成功", c)
 }
-func FailWithData(code ErrorCode, msg string, err error, c *gin.Context) {
-
-}
-func FAIL(code ErrorCode, msg string, c *gin.Context, option ...any) {
+func FAIL(code res.ErrorCode, msg string, c *gin.Context, option ...any) {
 	if len(option) == 0 {
 		Result(code, struct{}{}, msg, c)
 		return
@@ -75,7 +63,7 @@ func FAIL(code ErrorCode, msg string, c *gin.Context, option ...any) {
 	}
 	global.Log.Panicf("FAIL函数参数错误")
 }
-func FailWithOrigin(code ErrorCode, msg string, err error, c *gin.Context) {
+func FailWithOrigin(code res.ErrorCode, msg string, err error, c *gin.Context) {
 	Result(code, struct{}{}, msg+err.Error(), c)
 }
 func isDev() bool {

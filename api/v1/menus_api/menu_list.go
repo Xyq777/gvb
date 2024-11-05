@@ -2,10 +2,11 @@ package menus_api
 
 import (
 	"github.com/gin-gonic/gin"
+	"gvb/internal/callback"
 	"gvb/internal/dao"
 	"gvb/internal/global"
 	"gvb/internal/models"
-	"gvb/internal/models/res"
+	"gvb/internal/models/serializition/res"
 )
 
 type Banner struct {
@@ -24,9 +25,9 @@ func (a *MenusApi) MenuListView(c *gin.Context) {
 
 	if err != nil {
 		global.Log.Error(err)
-		res.FAIL(res.DatabaseFailedCreate, res.ErrorMsg(res.DatabaseFailedCreate), c, err)
+		callback.FAIL(res.DatabaseFailedCreate, res.CodeMsg(res.DatabaseFailedCreate), c, err)
 		return
 	}
 
-	res.OK(menus, c)
+	callback.OK(menus, c)
 }

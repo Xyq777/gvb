@@ -5,8 +5,8 @@ import (
 	"gorm.io/gorm"
 	"gvb/internal/global"
 	"gvb/internal/models"
-	"gvb/internal/models/req"
-	"gvb/internal/models/res"
+	"gvb/internal/models/serializition/req"
+	"gvb/internal/models/serializition/res"
 	"strconv"
 )
 
@@ -81,5 +81,8 @@ func UpdateMenu(ID uint, menu *req.MenuRequest) (*res.MenuResponse, error) {
 		MenuTitle: menuModel.MenuTitle,
 		MenuID:    menuModel.ID,
 	}, nil
+
+}
+func DeleteMenu() {
 
 }

@@ -2,9 +2,10 @@ package images_api
 
 import (
 	"github.com/gin-gonic/gin"
+	"gvb/internal/callback"
 	"gvb/internal/global"
-	"gvb/internal/models/res"
-	"gvb/internal/service/image_srv"
+	"gvb/internal/models/serializition/res"
+	"gvb/internal/service/srv_image"
 	"io/fs"
 	"os"
 )
@@ -39,13 +40,13 @@ func (a ImagesApi) ImagesUploadAPI(c *gin.Context) {
 
 	form, err := c.MultipartForm()
 	if err != nil {
-		res.FAIL(res.InvalidParams, "参数错误", c, err)
+		callback.FAIL(res.InvalidParams, "参数错误", c, err)
 		return
 	}
 	files, ok1 := form.File["images"]
 	uploadType, ok2 := form.Value["type"]
 	if !ok1 || !ok2 {
-		res.FAIL(res.InvalidParams, "请求字段错误", c, err)
+		callback.FAIL(res.InvalidParams, "请求字段错误", c, err)
 	}
 	//判断文件路径是否存在
 	basePath := global.Config.System.Upload.Path
@@ -54,12 +55,12 @@ func (a ImagesApi) ImagesUploadAPI(c *gin.Context) {
 		err = os.MkdirAll(basePath, fs.ModePerm)
 		if err != nil {
 			global.Log.Error(err)
-			res.FAIL(res.FailedCreateDir, "创建目录失败", c, err)
+			callback.FAIL(res.FailedCreateDir, "创建目录失败", c, err)
 		}
 	}
 	//封装
 	var resList []FileUploadResponse
-	var imageSrv image_srv.ImageSrv
+	var imageSrv srv_image.ImageSrv
 	for _, fileHeader := range files {
 		err = imageSrv.ImageUploadService(c, fileHeader, uploadType[0])
 		if err != nil {
@@ -71,10 +72,10 @@ func (a ImagesApi) ImagesUploadAPI(c *gin.Context) {
 	}
 
 	if hasFail {
-		res.FAIL(res.InvalidParams, "图片上传错误", c, resList)
+		callback.FAIL(res.InvalidParams, "图片上传错误", c, resList)
 		return
 	}
-	res.OK(resList, c)
+	callback.OK(resList, c)
 }
 func appendFailedResList(resList *[]FileUploadResponse, fileName string, msg string) {
 	hasFail = true
