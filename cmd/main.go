@@ -13,7 +13,6 @@ func main() {
 
 	//初始化日志
 	global.Log = core.InitLogger()
-	global.Log.Debugln(global.Config)
 	//初始化数据库
 	global.Db = core.InitGorm()
 	//读取命令行参数
@@ -21,6 +20,8 @@ func main() {
 	if flag.IsWebStop(op) {
 		flag.SwitchOption(op)
 		return
+	} else {
+		flag.SwitchOption(op)
 	}
 	//初始化路由
 	router := routers.InitRouter()
