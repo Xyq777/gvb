@@ -16,6 +16,7 @@ func InitRouter() *gin.Engine {
 	routerGroup.SettingsRouter()
 	routerGroup.ImagesRouter()
 	routerGroup.MenusRouter()
+	routerGroup.SettingUsersRouter()
 	return router
 
 }

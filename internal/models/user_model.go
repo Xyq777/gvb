@@ -8,9 +8,9 @@ import (
 // UserModel 用户表
 type UserModel struct {
 	gorm.Model
-	NickName       string           `gorm:"size:36" json:"nick_name"`                                                              // 昵称
-	UserName       string           `gorm:"size:36" json:"user_name"`                                                              // 用户名
-	Password       string           `gorm:"size:128" json:"password"`                                                              // 密码
+	Nickname       string           `gorm:"size:36" json:"nickname"`                                                               // 昵称
+	Username       string           `gorm:"size:36" json:"username"`                                                               // 用户名
+	Password       string           `gorm:"size:128" json:"-"`                                                                     // 密码
 	Avatar         string           `gorm:"size:256" json:"avatar_id"`                                                             // 头像id
 	Email          string           `gorm:"size:128" json:"email"`                                                                 // 邮箱
 	Tel            string           `gorm:"size:18" json:"tel"`                                                                    // 手机号

@@ -5,7 +5,7 @@ import (
 	"gvb/internal/global"
 	"gvb/internal/models"
 	"gvb/internal/models/ctype"
-	"gvb/tools/Encryptor"
+	"gvb/tools/encryptor"
 )
 
 func CreateUser() {
@@ -34,10 +34,10 @@ func CreateUser() {
 	fmt.Scan(&email)
 	fmt.Printf("请输入密码：")
 	fmt.Scan(&password)
-	hashPwd := Encryptor.Md5([]byte(password))
+	hashPwd := encryptor.Md5([]byte(password))
 	err := global.Db.Create(&models.UserModel{
-		NickName:   nickName,
-		UserName:   userName,
+		Nickname:   nickName,
+		Username:   userName,
 		Password:   hashPwd,
 		Email:      email,
 		Role:       ctype.PermissionAdmin,
