@@ -5,8 +5,8 @@ import (
 	"gorm.io/gorm"
 	"gvb/internal/global"
 	"gvb/internal/models"
-	"gvb/internal/models/serializition/req"
-	"gvb/internal/models/serializition/res"
+	"gvb/internal/models/dto/req"
+	"gvb/internal/models/dto/res"
 	"strconv"
 )
 

@@ -3,8 +3,8 @@ package srv_user
 import (
 	"gvb/internal/dao"
 	"gvb/internal/models"
-	"gvb/internal/models/serializition/req"
-	"gvb/internal/models/serializition/res"
+	"gvb/internal/models/dto/req"
+	"gvb/internal/models/dto/res"
 	"gvb/tools/jwt"
 )
 

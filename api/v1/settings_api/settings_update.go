@@ -6,7 +6,7 @@ import (
 	"gvb/config/custom"
 	"gvb/internal/callback"
 	"gvb/internal/core"
-	"gvb/internal/models/serializition/res"
+	"gvb/internal/models/dto/res"
 )
 
 func (a *SettingsApi) SettingsUpdate(c *gin.Context) {

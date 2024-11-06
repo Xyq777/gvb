@@ -7,8 +7,8 @@ import (
 	"gvb/internal/dao"
 	"gvb/internal/global"
 	"gvb/internal/models"
-	"gvb/internal/models/serializition/req"
-	"gvb/internal/models/serializition/res"
+	"gvb/internal/models/dto/req"
+	"gvb/internal/models/dto/res"
 )
 
 func (s MenuSrv) Delete(deleteReq []req.DeleteReq) (*res.Response, error) {

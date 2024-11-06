@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"gvb/internal/callback"
 	"gvb/internal/global"
-	"gvb/internal/models/serializition/req"
-	"gvb/internal/models/serializition/res"
+	"gvb/internal/models/dto/req"
+	"gvb/internal/models/dto/res"
 	"gvb/internal/service"
 	"gvb/tools/jwt"
 )

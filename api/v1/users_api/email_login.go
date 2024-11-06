@@ -3,8 +3,8 @@ package users_api
 import (
 	"github.com/gin-gonic/gin"
 	"gvb/internal/callback"
-	"gvb/internal/models/serializition/req"
-	"gvb/internal/models/serializition/res"
+	"gvb/internal/models/dto/req"
+	"gvb/internal/models/dto/res"
 	"gvb/internal/service"
 )
 

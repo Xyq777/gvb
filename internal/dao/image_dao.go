@@ -4,7 +4,7 @@ import (
 	"errors"
 	"gvb/internal/global"
 	"gvb/internal/models"
-	"gvb/internal/models/serializition/req"
+	"gvb/internal/models/dto/req"
 )
 
 func UpdateImage(req req.UpdateImageNameReq) (*models.BannerModel, error) {

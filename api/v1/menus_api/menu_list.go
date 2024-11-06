@@ -6,7 +6,7 @@ import (
 	"gvb/internal/dao"
 	"gvb/internal/global"
 	"gvb/internal/models"
-	"gvb/internal/models/serializition/res"
+	"gvb/internal/models/dto/res"
 )
 
 type Banner struct {
