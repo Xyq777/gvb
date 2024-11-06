@@ -1,4 +1,4 @@
-package models
+package dao
 
 import (
 	"gorm.io/gorm"
@@ -21,4 +21,9 @@ type UserModel struct {
 	SignStatus     ctype.SignStatus `gorm:"type=smallint(6)" json:"sign_status"`                                                   // 注册来源
 	ArticleModels  []ArticleModel   `gorm:"foreignKey:UserID" json:"-"`                                                            // 发布的文章列表
 	CollectsModels []ArticleModel   `gorm:"many2many:user_collect_models;joinForeignKey:UserID;JoinReferences:ArticleID" json:"-"` // 收藏的文章列表
+}
+
+func (m UserModel) Update(tx *gorm.DB) error {
+	return tx.Model(&UserModel{}).Where("id = ?", m.ID).Updates(m).Error
+
 }

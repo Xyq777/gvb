@@ -4,7 +4,7 @@ import (
 	"errors"
 	"gorm.io/gorm"
 	"gvb/internal/global"
-	"gvb/internal/models"
+	"gvb/internal/models/dao"
 	"gvb/internal/models/dto/req"
 	"gvb/internal/models/dto/res"
 	"strconv"
@@ -12,7 +12,7 @@ import (
 
 func CreateMenu(menu *req.MenuRequest) (*res.MenuResponse, error) {
 	// 创建banner数据入库
-	menuModel := models.MenuModel{
+	menuModel := dao.MenuModel{
 		MenuTitle:    menu.MenuTitle,
 		MenuTitleEn:  menu.MenuTitleEn,
 		Slogan:       menu.Slogan,
@@ -33,11 +33,11 @@ func CreateMenu(menu *req.MenuRequest) (*res.MenuResponse, error) {
 	}, nil
 
 }
-func CreateMenuBanner(menuBannerList []models.MenuBannerModel) error {
+func CreateMenuBanner(menuBannerList []dao.MenuBannerModel) error {
 	//检查banner是否存在
 	for _, menuBanner := range menuBannerList {
-		_, count, err := FindWithID(models.BannerModel{}, menuBanner.BannerID)
-		if count == 0 {
+		_, exist, err := dao.FindWithID(dao.BannerModel{}, menuBanner.BannerID)
+		if !exist {
 			return errors.New(strconv.Itoa(int(menuBanner.BannerID)) + "图片不存在")
 		}
 		if err != nil {
@@ -51,7 +51,7 @@ func CreateMenuBanner(menuBannerList []models.MenuBannerModel) error {
 	}
 	return nil
 }
-func ListMenus(limit int) (menuList []models.MenuModel, err error) {
+func ListMenus(limit int) (menuList []dao.MenuModel, err error) {
 	err = global.Db.Preload("Banners").Order("sort desc").Find(&menuList).Select("id").Limit(limit).Error
 
 	if err != nil {
@@ -62,7 +62,7 @@ func ListMenus(limit int) (menuList []models.MenuModel, err error) {
 
 }
 func UpdateMenu(ID uint, menu *req.MenuRequest) (*res.MenuResponse, error) {
-	menuModel := models.MenuModel{
+	menuModel := dao.MenuModel{
 		Model:        gorm.Model{ID: ID},
 		MenuTitle:    menu.MenuTitle,
 		MenuTitleEn:  menu.MenuTitleEn,

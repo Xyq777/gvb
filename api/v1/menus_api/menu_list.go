@@ -5,7 +5,7 @@ import (
 	"gvb/internal/callback"
 	"gvb/internal/dao"
 	"gvb/internal/global"
-	"gvb/internal/models"
+	dao2 "gvb/internal/models/dao"
 	"gvb/internal/models/dto/res"
 )
 
@@ -15,7 +15,7 @@ type Banner struct {
 }
 
 type MenuResponse struct {
-	models.MenuModel
+	dao2.MenuModel
 	Banners []Banner `json:"banners"`
 }
 

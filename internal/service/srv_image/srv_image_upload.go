@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	_const "gvb/const"
 	"gvb/internal/global"
-	"gvb/internal/models"
 	"gvb/internal/models/ctype"
+	"gvb/internal/models/dao"
 	"gvb/internal/tools/qiniu"
 	"gvb/tools/encryptor"
 	"gvb/tools/validator"
@@ -63,7 +63,7 @@ func (ImageSrv) ImageUploadService(c *gin.Context, fh *multipart.FileHeader, upl
 		return errors.New("图片读取错误")
 	}
 	fileHash := encryptor.Md5(fileByte)
-	result := global.Db.Limit(1).Find(&models.BannerModel{}, "hash = ?", fileHash)
+	result := global.Db.Limit(1).Find(&dao.BannerModel{}, "hash = ?", fileHash)
 	if result.Error != nil {
 		return errors.New("数据库查询错误")
 	}
@@ -91,7 +91,7 @@ func (ImageSrv) ImageUploadService(c *gin.Context, fh *multipart.FileHeader, upl
 		}
 	}
 	//入库
-	err = global.Db.Create(&models.BannerModel{
+	err = global.Db.Create(&dao.BannerModel{
 		Path:      filePath,
 		Hash:      fileHash,
 		Name:      fh.Filename,

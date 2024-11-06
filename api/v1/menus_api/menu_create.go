@@ -5,7 +5,7 @@ import (
 	"gvb/internal/callback"
 	"gvb/internal/dao"
 	"gvb/internal/global"
-	"gvb/internal/models"
+	dao2 "gvb/internal/models/dao"
 	"gvb/internal/models/dto/req"
 	"gvb/internal/models/dto/res"
 )
@@ -32,11 +32,11 @@ func (a *MenusApi) MenuCreateView(c *gin.Context) {
 		return
 	}
 
-	var menuBannerList []models.MenuBannerModel
+	var menuBannerList []dao2.MenuBannerModel
 
 	for _, sort := range menuReq.ImageSortList {
 		// 这里也得判断image_id是否真正有这张图片
-		menuBannerList = append(menuBannerList, models.MenuBannerModel{
+		menuBannerList = append(menuBannerList, dao2.MenuBannerModel{
 			MenuID:   menuRes.MenuID,
 			BannerID: sort.ImageID,
 			Sort:     sort.Sort,

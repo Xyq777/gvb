@@ -1,21 +1,20 @@
 package srv_user
 
 import (
-	"gvb/internal/dao"
-	"gvb/internal/models"
 	"gvb/internal/models/ctype"
-	"gvb/internal/models/serializition/req"
-	"gvb/internal/models/serializition/res"
+	dao2 "gvb/internal/models/dao"
+	"gvb/internal/models/dto/req"
+	"gvb/internal/models/dto/res"
 	"gvb/tools/desense"
 )
 
 func (s UserSrv) UserList(page req.Page, role ctype.Role) (*res.Response, error) {
-	users, count, err := dao.GetList(models.UserModel{}, &page)
+	users, count, err := dao2.GetList(dao2.UserModel{}, &page)
 	if err != nil {
 		resp := res.NewResponse(res.DatabaseOperateError, res.EmptyData, res.CodeMsg(res.DatabaseOperateError))
 		return resp, err
 	}
-	var userList []models.UserModel
+	var userList []dao2.UserModel
 	for _, user := range users {
 		if role != ctype.PermissionAdmin {
 			// 脱敏
