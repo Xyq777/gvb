@@ -11,6 +11,7 @@ const (
 	NotFoundImages             ErrorCode = 40006
 	UserNotExist               ErrorCode = 40007
 	PasswordNotMatched         ErrorCode = 40008
+	PermissionDenied           ErrorCode = 40009
 	FailedRewriteToml          ErrorCode = 50000
 	UploadFileFailed           ErrorCode = 50001
 	FailedGetImageList         ErrorCode = 50002

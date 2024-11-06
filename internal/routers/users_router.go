@@ -11,4 +11,5 @@ func (r *RouterGroup) SettingUsersRouter() {
 
 	g.POST("/list", middleware.JwtAuth(), usersApi.UserListApi)
 	g.POST("/login", usersApi.UserEmailLoginApi)
+	g.POST("", middleware.JwtAuth(), usersApi.UserUpdateApi)
 }

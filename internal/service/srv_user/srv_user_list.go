@@ -15,6 +15,7 @@ func (s UserSrv) UserList(page req.Page, role ctype.Role) (*res.Response, error)
 		resp := res.NewResponse(res.DatabaseOperateError, res.EmptyData, res.CodeMsg(res.DatabaseOperateError))
 		return resp, err
 	}
+	var userList []models.UserModel
 	for _, user := range users {
 		if role != ctype.PermissionAdmin {
 			// 脱敏
@@ -22,11 +23,11 @@ func (s UserSrv) UserList(page req.Page, role ctype.Role) (*res.Response, error)
 			user.Tel = desense.TelDesensitization(user.Tel)
 			user.Email = desense.EmailDesensitization(user.Email)
 		}
-		users = append(users, user)
+		userList = append(userList, user)
 	}
 	listData := res.ListRespData{
 		Count: count,
-		List:  users,
+		List:  userList,
 	}
 	resp := res.NewResponse(res.Success, listData, res.CodeMsg(res.Success))
 

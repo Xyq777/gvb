@@ -20,7 +20,7 @@ func CreateUser() {
 	for true {
 		fmt.Printf("请输入用户名：")
 		fmt.Scan(&userName)
-		count := global.Db.Find(&models.UserModel{}, "user_name = ?", userName).RowsAffected
+		count := global.Db.Find(&models.UserModel{}, "username = ?", userName).RowsAffected
 		if count != 0 {
 			fmt.Println("用户名已存在")
 			continue
