@@ -1,20 +1,21 @@
-package JWT
+package jwt
 
 import (
 	"errors"
-	"github.com/golang-jwt/jwt/v5"
+	_jwt "github.com/golang-jwt/jwt/v5"
 	"gvb/internal/global"
+	"gvb/internal/models/ctype"
 	"time"
 )
 
 type Payload struct {
-	UserName string `json:"user_name"`
-	NickName string `json:"nick_name"`
-	UserID   uint   `json:"user_id"`
-	Role     int    `json:"role"`
+	Username string     `json:"username"`
+	Nickname string     `json:"nickname"`
+	UserID   uint       `json:"user_id"`
+	Role     ctype.Role `json:"role"`
 }
 type CustomClaims struct {
-	jwt.RegisteredClaims
+	_jwt.RegisteredClaims
 	Payload
 }
 
@@ -24,18 +25,18 @@ func GenerateToken(payload Payload) (string, error) {
 	Secret = []byte(global.Config.System.Jwt.Secret)
 	claims := CustomClaims{
 		Payload: payload,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * time.Duration(global.Config.System.Jwt.Expires))),
+		RegisteredClaims: _jwt.RegisteredClaims{
+			ExpiresAt: _jwt.NewNumericDate(time.Now().Add(time.Hour * time.Duration(global.Config.System.Jwt.Expires))),
 			Issuer:    global.Config.System.Jwt.Issuer,
 		},
 	}
-	t := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	t := _jwt.NewWithClaims(_jwt.SigningMethodHS256, claims)
 	return t.SignedString(Secret)
 }
 func ParseToken(token string) (*CustomClaims, error) {
 	Secret = []byte(global.Config.System.Jwt.Secret)
 	//如果想减少服务器操作量，可以在keyFunc中对token签名方法进行判断
-	t, err := jwt.ParseWithClaims(token, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+	t, err := _jwt.ParseWithClaims(token, &CustomClaims{}, func(token *_jwt.Token) (interface{}, error) {
 		return Secret, nil
 	})
 	if err != nil {
