@@ -9,7 +9,7 @@ import (
 	"gvb/internal/models"
 	"gvb/internal/models/ctype"
 	"gvb/internal/tools/qiniu"
-	"gvb/tools/Encryptor"
+	"gvb/tools/encryptor"
 	"gvb/tools/validator"
 	"io"
 	"mime/multipart"
@@ -62,7 +62,7 @@ func (ImageSrv) ImageUploadService(c *gin.Context, fh *multipart.FileHeader, upl
 		global.Log.Errorln(err)
 		return errors.New("图片读取错误")
 	}
-	fileHash := Encryptor.Md5(fileByte)
+	fileHash := encryptor.Md5(fileByte)
 	result := global.Db.Limit(1).Find(&models.BannerModel{}, "hash = ?", fileHash)
 	if result.Error != nil {
 		return errors.New("数据库查询错误")
