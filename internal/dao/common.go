@@ -30,6 +30,13 @@ func FindWithID[T any](model T, ID uint) (resModel *T, count int, err error) {
 	return resModel, count, err
 
 }
+func FindWithUsername[T any](model T, name string) (resModel *T, exist bool, err error) {
+	res := global.Db.Find(&resModel, "username = ?", name)
+	count, err := getErrorAndCount(res)
+	exist = count != 0
+	return resModel, exist, err
+
+}
 func getErrorAndCount(res *gorm.DB) (int, error) {
 	return int(res.RowsAffected), res.Error
 
