@@ -12,6 +12,7 @@ const (
 	UserNotExist               ErrorCode = 40007
 	PasswordNotMatched         ErrorCode = 40008
 	PermissionDenied           ErrorCode = 40009
+	PasswordNotMatch           ErrorCode = 40010
 	FailedRewriteToml          ErrorCode = 50000
 	UploadFileFailed           ErrorCode = 50001
 	FailedGetImageList         ErrorCode = 50002
