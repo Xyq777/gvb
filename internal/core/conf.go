@@ -23,6 +23,7 @@ func initSystemConfWithEnv(c *config.Config) {
 	EnvConfig.Load("SYSTEM_", &c.System.App)
 	EnvConfig.Load("JWT_", &c.System.Jwt)
 	EnvConfig.Load("UPLOAD_", &c.System.Upload)
+	EnvConfig.Load("REDIS_", &c.System.Redis)
 }
 func initCustomWithToml(c *config.Config) {
 

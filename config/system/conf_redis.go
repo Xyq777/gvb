@@ -3,10 +3,10 @@ package system
 import "fmt"
 
 type Redis struct {
-	IP       string `json:"ip" yaml:"ip"`
-	Port     int    `json:"port" yaml:"port"`
-	Password string `json:"password" yaml:"password"`
-	PoolSize int    `json:"pool_size" yaml:"pool_size"`
+	IP       string `json:"ip" `
+	Port     int    `json:"port" `
+	Password string `json:"password" config:"omitempty"`
+	PoolSize int    `json:"pool_size" config:"omitempty"`
 }
 
 func (r Redis) Addr() string {
