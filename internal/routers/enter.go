@@ -14,7 +14,7 @@ func InitRouter() *gin.Engine {
 	router := gin.Default()
 
 	routerGroup := RouterGroup{router}
-	routerGroup.GET("/refresh", middleware.TokenRefresh)
+	routerGroup.GET("/token", middleware.TokenRefresh)
 	routerGroup.SettingsRouter()
 	routerGroup.ImagesRouter()
 	routerGroup.MenusRouter()

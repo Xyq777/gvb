@@ -43,7 +43,7 @@ func generateToken(payload Payload, exp time.Duration, jti string) (string, erro
 	claims := CustomClaims{
 		Payload: payload,
 		RegisteredClaims: _jwt.RegisteredClaims{
-			ExpiresAt: _jwt.NewNumericDate(time.Now().Add(time.Second * time.Duration(exp))),
+			ExpiresAt: _jwt.NewNumericDate(time.Now().Add(exp)),
 			Issuer:    global.Config.System.Jwt.Issuer,
 			ID:        jti,
 		},
