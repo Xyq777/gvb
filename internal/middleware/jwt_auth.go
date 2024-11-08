@@ -7,8 +7,8 @@ import (
 	"gvb/internal/global"
 	"gvb/internal/models/ctype"
 	"gvb/internal/models/dto/res"
+	"gvb/internal/service/srv_redis"
 	"gvb/tools/jwt"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -23,18 +23,20 @@ func TokenRefresh(c *gin.Context) {
 
 	claims, err := jwt.ParseToken(rt)
 	if err != nil {
+		global.Log.Errorln(err)
 		callback.FAIL(res.AuthFailed, res.CodeMsg(res.AuthFailed), c)
 		c.Abort()
 		return
 	}
 	jti := claims.ID
-	exist, err := global.Redis.HExists(c, strconv.Itoa(int(claims.UserID)), jti).Result()
+	exist, err := srv_redis.ExistToken(claims.UserID, jti)
 	if err != nil {
 		global.Log.Errorln(err)
 		callback.FAIL(res.RedisGetFailed, res.CodeMsg(res.RedisGetFailed), c)
 		return
 	}
 	if !exist {
+		global.Log.Error("refreshToken不存在")
 		callback.FAIL(res.AuthFailed, res.CodeMsg(res.AuthFailed), c)
 		return
 	}
@@ -61,6 +63,7 @@ func JwtAuth() func(c *gin.Context) {
 		token := strings.TrimPrefix(authHeader, bearerPrefix)
 		claims, err := jwt.ParseToken(token)
 		if err != nil {
+			global.Log.Error(err)
 			callback.FAIL(res.AuthFailed, res.CodeMsg(res.AuthFailed), c)
 			c.Abort()
 			return
