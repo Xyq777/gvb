@@ -1,16 +1,15 @@
 package srv_user
 
 import (
-	"context"
 	"errors"
 	"github.com/google/uuid"
 	"gvb/internal/global"
 	"gvb/internal/models/dao"
 	"gvb/internal/models/dto/req"
 	"gvb/internal/models/dto/res"
+	"gvb/internal/service/srv_redis"
 	"gvb/tools/encryptor"
 	"gvb/tools/jwt"
-	"strconv"
 	"time"
 )
 
@@ -50,11 +49,26 @@ func (s UserSrv) EmailLogin(user *req.UserEmailLoginReq) (*res.Response, error) 
 		resp := res.NewResponse(res.TokenGenerateFailed, res.EmptyData, res.CodeMsg(res.TokenGenerateFailed))
 		return resp, err
 	}
-	global.Redis.HSet(context.Background(), strconv.Itoa(int(userModel.ID)), jti, rtExp)
+	err = srv_redis.SetToken(userModel.ID, jti, rtExp)
+	if err != nil {
+		global.Log.Error(err)
+		resp := res.NewResponse(res.RedisSetFailed, res.EmptyData, res.CodeMsg(res.RedisSetFailed))
+		return resp, err
+	}
 	dataResp := res.LoginRes{
 		AccessToken:  at,
 		RefreshToken: rt,
 	}
+	s.C.SetCookie(
+		"refreshToken",       // Cookie 名称
+		rt,                   // Cookie 值
+		int(rtExp.Seconds()), // 过期时间，单位为秒
+		"/",                  // 路径
+		"localhost",          // 域名
+		true,                 // 是否只能通过 HTTPS 传输
+		true,                 // HttpOnly，禁止 JavaScript 访问
+	)
+
 	resp := res.NewResponse(res.Success, dataResp, res.CodeMsg(res.Success))
 	return resp, nil
 }

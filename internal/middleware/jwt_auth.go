@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"gvb/internal/callback"
 	"gvb/internal/global"
@@ -13,15 +14,14 @@ import (
 )
 
 func TokenRefresh(c *gin.Context) {
-	authHeader := c.GetHeader("Authorization")
-	const bearerPrefix = "Bearer "
-	if !strings.HasPrefix(authHeader, bearerPrefix) {
-		callback.FAIL(res.AuthFailed, "认证类型不符", c)
+	rt, err := c.Cookie("refreshToken")
+	if err != nil {
+		callback.FAIL(res.AuthFailed, res.CodeMsg(res.AuthFailed), c, errors.New("cookie没有refreshToken"))
 		c.Abort()
 		return
 	}
-	token := strings.TrimPrefix(authHeader, bearerPrefix)
-	claims, err := jwt.ParseToken(token)
+
+	claims, err := jwt.ParseToken(rt)
 	if err != nil {
 		callback.FAIL(res.AuthFailed, res.CodeMsg(res.AuthFailed), c)
 		c.Abort()

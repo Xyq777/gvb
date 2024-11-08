@@ -15,6 +15,6 @@ func (s Srv_) NewMenuSrv(c *gin.Context) *srv_menu.MenuSrv {
 	return &srv_menu.MenuSrv{C: c}
 }
 func (s Srv_) NewUserSrv(c *gin.Context) *srv_user.UserSrv {
-	return &srv_user.UserSrv{}
+	return &srv_user.UserSrv{C: c}
 
 }
