@@ -22,6 +22,7 @@ const (
 	DatabaseFailedCreate       ErrorCode = 50006
 	DatabaseMenuFailedDelete   ErrorCode = 50007
 	TokenGenerateFailed        ErrorCode = 50008
+	RedisGetFailed             ErrorCode = 50009
 )
 
 var codeToMsg = map[ErrorCode]string{
@@ -35,6 +36,7 @@ var codeToMsg = map[ErrorCode]string{
 	DatabaseOperateError:     "数据库操作失败",
 	DatabaseMenuFailedDelete: "数据库菜单删除失败",
 	TokenGenerateFailed:      "Token生成失败",
+	RedisGetFailed:           "Redis获取数据失败",
 }
 
 func CodeMsg(code ErrorCode) string {

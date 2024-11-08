@@ -21,13 +21,31 @@ type CustomClaims struct {
 
 var Secret []byte
 
-func GenerateToken(payload Payload) (string, error) {
+func GenRefreshToken(payload Payload, exp time.Duration, jti string) (string, error) {
+	rt, err := generateToken(payload, exp, jti)
+	if err != nil {
+		global.Log.Error(err.Error())
+		return "", err
+	}
+	return rt, nil
+}
+func GenAccessToken(payload Payload, exp time.Duration) (string, error) {
+	rt, err := generateToken(payload, exp, "")
+	if err != nil {
+		global.Log.Error(err.Error())
+		return "", err
+	}
+	return rt, nil
+
+}
+func generateToken(payload Payload, exp time.Duration, jti string) (string, error) {
 	Secret = []byte(global.Config.System.Jwt.Secret)
 	claims := CustomClaims{
 		Payload: payload,
 		RegisteredClaims: _jwt.RegisteredClaims{
-			ExpiresAt: _jwt.NewNumericDate(time.Now().Add(time.Hour * time.Duration(global.Config.System.Jwt.Expires))),
+			ExpiresAt: _jwt.NewNumericDate(time.Now().Add(time.Second * time.Duration(exp))),
 			Issuer:    global.Config.System.Jwt.Issuer,
+			ID:        jti,
 		},
 	}
 	t := _jwt.NewWithClaims(_jwt.SigningMethodHS256, claims)

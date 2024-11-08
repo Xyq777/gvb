@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	"gvb/internal/middleware"
 )
 
 type RouterGroup struct {
@@ -13,6 +14,7 @@ func InitRouter() *gin.Engine {
 	router := gin.Default()
 
 	routerGroup := RouterGroup{router}
+	routerGroup.GET("/refresh", middleware.TokenRefresh)
 	routerGroup.SettingsRouter()
 	routerGroup.ImagesRouter()
 	routerGroup.MenusRouter()
