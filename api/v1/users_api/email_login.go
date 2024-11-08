@@ -20,5 +20,5 @@ func (a *UsersApi) UserEmailLoginApi(c *gin.Context) {
 		callback.FAIL(res.DatabaseOperateError, res.CodeMsg(res.DatabaseOperateError), c, err)
 		return
 	}
-	callback.OK(resp, c)
+	callback.OK(resp.Data, c)
 }
