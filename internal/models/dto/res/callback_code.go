@@ -13,6 +13,7 @@ const (
 	PasswordNotMatched         ErrorCode = 40008
 	PermissionDenied           ErrorCode = 40009
 	PasswordNotMatch           ErrorCode = 40010
+	AlreadyLogout              ErrorCode = 40011
 	FailedRewriteToml          ErrorCode = 50000
 	UploadFileFailed           ErrorCode = 50001
 	FailedGetImageList         ErrorCode = 50002
@@ -23,20 +24,26 @@ const (
 	DatabaseMenuFailedDelete   ErrorCode = 50007
 	TokenGenerateFailed        ErrorCode = 50008
 	RedisGetFailed             ErrorCode = 50009
+	RedisDelFailed             ErrorCode = 50010
+	RedisSetFailed             ErrorCode = 50011
 )
 
 var codeToMsg = map[ErrorCode]string{
-	Success:                  "操作成功",
-	NotFound:                 "资源不存在",
-	InvalidParams:            "参数错误",
-	UserNotExist:             "用户不存在",
-	AuthFailed:               "认证失败",
-	PasswordNotMatched:       "密码错误",
+	Success:            "操作成功",
+	NotFound:           "资源不存在",
+	InvalidParams:      "参数错误",
+	UserNotExist:       "用户不存在",
+	AuthFailed:         "认证失败",
+	PasswordNotMatched: "密码错误",
+	AlreadyLogout:      "已经登出",
+
 	DatabaseFailedCreate:     "数据库创建操作失败",
 	DatabaseOperateError:     "数据库操作失败",
 	DatabaseMenuFailedDelete: "数据库菜单删除失败",
 	TokenGenerateFailed:      "Token生成失败",
 	RedisGetFailed:           "Redis获取数据失败",
+	RedisDelFailed:           "Redis删除数据失败",
+	RedisSetFailed:           "Redis设置数据失败",
 }
 
 func CodeMsg(code ErrorCode) string {
