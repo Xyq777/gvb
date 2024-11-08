@@ -13,4 +13,6 @@ func (r *RouterGroup) SettingUsersRouter() {
 	g.POST("/login", usersApi.UserEmailLoginApi)
 	g.PUT("", middleware.JwtAuth(), usersApi.UserUpdateApi)
 	g.PUT("/password", middleware.JwtAuth(), usersApi.UserUpdatePasswordApi)
+	g.DELETE("", middleware.JwtAuth(), usersApi.UserDeleteApi)
+
 }

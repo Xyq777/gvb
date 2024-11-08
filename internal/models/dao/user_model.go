@@ -2,6 +2,7 @@ package dao
 
 import (
 	"gorm.io/gorm"
+	"gvb/internal/global"
 	"gvb/internal/models/ctype"
 )
 
@@ -23,7 +24,23 @@ type UserModel struct {
 	CollectsModels []ArticleModel   `gorm:"many2many:user_collect_models;joinForeignKey:UserID;JoinReferences:ArticleID" json:"-"` // 收藏的文章列表
 }
 
-func (m UserModel) Update(tx *gorm.DB) error {
-	return tx.Model(&UserModel{}).Where("id = ?", m.ID).Updates(m).Error
+func (u UserModel) Update(tx *gorm.DB) error {
+	return tx.Model(&UserModel{}).Where("id = ?", u.ID).Updates(u).Error
+
+}
+func (u UserModel) Delete(tx *gorm.DB) error {
+	err := tx.Transaction(func(tx *gorm.DB) error {
+		// TODO:删除用户，消息表，评论表，用户收藏的文章，用户发布的文章
+		err := tx.Delete(&u).Error
+		if err != nil {
+			global.Log.Error(err)
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 
 }
