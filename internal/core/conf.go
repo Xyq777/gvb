@@ -24,6 +24,7 @@ func initSystemConfWithEnv(c *config.Config) {
 	EnvConfig.Load("JWT_", &c.System.Jwt)
 	EnvConfig.Load("UPLOAD_", &c.System.Upload)
 	EnvConfig.Load("REDIS_", &c.System.Redis)
+	EnvConfig.Load("EMAIL_", &c.System.Email)
 }
 func initCustomWithToml(c *config.Config) {
 
