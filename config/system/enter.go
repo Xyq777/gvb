@@ -7,4 +7,5 @@ type System struct {
 	Jwt    Jwt
 	Upload Upload
 	Redis  Redis
+	Email  Email
 }
