@@ -1,6 +1,7 @@
 package users_api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
 	"gvb/internal/callback"
@@ -9,12 +10,13 @@ import (
 	"gvb/internal/models/dto/req"
 	"gvb/internal/models/dto/res"
 	"gvb/internal/tools/claimx"
-	"gvb/internal/tools/email"
 	"gvb/tools/random"
+	"time"
 )
 
 var store = sessions.NewCookieStore([]byte("HQBVQKWB@5@"))
 
+// UserBindEmailApi TODO 防止多次请求，改用flash message
 func (a *UsersApi) UserBindEmailApi(c *gin.Context) {
 
 	claims, err := claimx.GetClaim(c)
@@ -49,6 +51,10 @@ func (a *UsersApi) UserBindEmailApi(c *gin.Context) {
 		}
 		session.Values["code"] = code
 		session.Values["email"] = bindEmailReq.Email
+		session.Values["exp"] = time.Now().Add(60 * time.Second).Unix()
+		//TODO HTTPS
+		session.Options.Secure = false
+
 		err = store.Save(c.Request, c.Writer, session)
 		if err != nil {
 			global.Log.Error(err)
@@ -67,13 +73,15 @@ func (a *UsersApi) UserBindEmailApi(c *gin.Context) {
 	//第二步，绑定邮箱
 	sessionCode := session.Values["code"]
 	sessionEmail := session.Values["email"]
-	global.Log.Debugln(sessionCode, sessionEmail)
-	if sessionCode == nil || sessionEmail == nil {
-		callback.FAIL(res.NotFoundSessionField, res.CodeMsg(res.NotFoundSessionField), c, err)
-		return
-	}
+	sessionExp := session.Values["exp"]
+	global.Log.Debugln(sessionCode, sessionEmail, sessionExp)
+
 	if sessionCode != *bindEmailReq.Code || sessionEmail != bindEmailReq.Email {
 		callback.FAIL(res.CodeNotMatched, res.CodeMsg(res.CodeNotMatched), c, err)
+		return
+	}
+	if sessionExp.(int64) < time.Now().Unix() {
+		callback.FAIL(res.SessionExpired, res.CodeMsg(res.SessionExpired), c, err)
 		return
 	}
 	var user dao.UserModel

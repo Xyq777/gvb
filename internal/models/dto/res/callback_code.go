@@ -17,6 +17,7 @@ const (
 	NotFoundSession            ErrorCode = 40012
 	CodeNotMatched             ErrorCode = 40013
 	NotFoundSessionField       ErrorCode = 40014
+	SessionExpired             ErrorCode = 40015
 
 	FailedRewriteToml        ErrorCode = 50000
 	UploadFileFailed         ErrorCode = 50001
@@ -44,9 +45,10 @@ var codeToMsg = map[ErrorCode]string{
 	AuthFailed:           "认证失败",
 	PasswordNotMatched:   "密码错误",
 	AlreadyLogout:        "已经登出",
-	NotFoundSession:      "Session不存在",
+	NotFoundSession:      "会话不存在",
 	CodeNotMatched:       "验证码错误",
 	NotFoundSessionField: "Session字段不存在",
+	SessionExpired:       "验证码过期",
 
 	DatabaseFailedCreate:     "数据库创建操作失败",
 	DatabaseOperateError:     "数据库操作失败",
