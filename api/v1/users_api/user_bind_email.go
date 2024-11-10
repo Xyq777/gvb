@@ -9,11 +9,13 @@ import (
 	"gvb/internal/models/dao"
 	"gvb/internal/models/dto/req"
 	"gvb/internal/models/dto/res"
+	"gvb/internal/service"
 	"gvb/internal/tools/claimx"
 	"gvb/tools/random"
 	"time"
 )
 
+// 只使用加密逻辑，不存服务器
 var store = sessions.NewCookieStore([]byte("HQBVQKWB@5@"))
 
 // UserBindEmailApi TODO 防止多次请求，改用flash message
@@ -32,6 +34,7 @@ func (a *UsersApi) UserBindEmailApi(c *gin.Context) {
 		callback.FAIL(res.InvalidParams, res.CodeMsg(res.InvalidParams), c, err)
 		return
 	}
+	var userSrv = service.Srv.NewUserSrv(c)
 	//通过判断是否传了验证码来决定是第几步操作
 	//验证码设置为引用类型，排除用户提交""字符串
 	if bindEmailReq.Code == nil {
@@ -71,16 +74,17 @@ func (a *UsersApi) UserBindEmailApi(c *gin.Context) {
 		return
 	}
 	//第二步，绑定邮箱
-	sessionCode := session.Values["code"]
-	sessionEmail := session.Values["email"]
-	sessionExp := session.Values["exp"]
-	global.Log.Debugln(sessionCode, sessionEmail, sessionExp)
-
-	if sessionCode != *bindEmailReq.Code || sessionEmail != bindEmailReq.Email {
+	s, err := userSrv.CheckSession(session)
+	if err != nil {
+		callback.FAIL(res.SessionError, res.CodeMsg(res.SessionError), c, err)
+		return
+	}
+	global.Log.Debugln(s.Code, s.Email, s.Exp)
+	if s.Code != *bindEmailReq.Code || s.Email != bindEmailReq.Email {
 		callback.FAIL(res.CodeNotMatched, res.CodeMsg(res.CodeNotMatched), c, err)
 		return
 	}
-	if sessionExp.(int64) < time.Now().Unix() {
+	if s.Exp < time.Now().Unix() {
 		callback.FAIL(res.SessionExpired, res.CodeMsg(res.SessionExpired), c, err)
 		return
 	}
