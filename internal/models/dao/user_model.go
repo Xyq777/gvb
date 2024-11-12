@@ -44,3 +44,6 @@ func (u UserModel) Delete(tx *gorm.DB) error {
 	return nil
 
 }
+func (u UserModel) Create(tx *gorm.DB) error {
+	return tx.Create(&u).Error
+}

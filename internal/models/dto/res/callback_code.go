@@ -14,10 +14,13 @@ const (
 	PermissionDenied           ErrorCode = 40009
 	PasswordNotMatch           ErrorCode = 40010
 	AlreadyLogout              ErrorCode = 40011
-	NotFoundSession            ErrorCode = 40012
-	CodeNotMatched             ErrorCode = 40013
-	NotFoundSessionField       ErrorCode = 40014
-	SessionExpired             ErrorCode = 40015
+
+	NotFoundSession      ErrorCode = 40012
+	CodeNotMatched       ErrorCode = 40013
+	NotFoundSessionField ErrorCode = 40014
+	SessionExpired       ErrorCode = 40015
+
+	StateNotMatched ErrorCode = 40016
 
 	FailedRewriteToml        ErrorCode = 50000
 	UploadFileFailed         ErrorCode = 50001
@@ -35,6 +38,10 @@ const (
 
 	EmailSendError ErrorCode = 50012
 	SessionError   ErrorCode = 50013
+
+	GithubLoginFailed ErrorCode = 50014
+
+	SeverError ErrorCode = 50050
 )
 
 var codeToMsg = map[ErrorCode]string{
@@ -50,6 +57,9 @@ var codeToMsg = map[ErrorCode]string{
 	NotFoundSessionField: "Session字段不存在",
 	SessionExpired:       "验证码过期",
 
+	StateNotMatched: "state不匹配",
+
+	SeverError:               "服务器错误",
 	DatabaseFailedCreate:     "数据库创建操作失败",
 	DatabaseOperateError:     "数据库操作失败",
 	DatabaseMenuFailedDelete: "数据库菜单删除失败",
@@ -60,6 +70,8 @@ var codeToMsg = map[ErrorCode]string{
 
 	EmailSendError: "邮件发送失败",
 	SessionError:   "Session操作失败",
+
+	GithubLoginFailed: "Github登录失败",
 }
 
 func CodeMsg(code ErrorCode) string {

@@ -17,6 +17,9 @@ func Result(code res.ErrorCode, data any, msg string, c *gin.Context) {
 func OK(data any, c *gin.Context) {
 	Result(res.Success, data, "操作成功", c)
 }
+func Redirect(code int, c *gin.Context, url string) {
+	c.Redirect(code, url)
+}
 func FAIL(code res.ErrorCode, msg string, c *gin.Context, option ...any) {
 	if len(option) == 0 {
 		Result(code, struct{}{}, msg, c)
