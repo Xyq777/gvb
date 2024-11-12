@@ -18,7 +18,7 @@ import (
 // 只使用加密逻辑，不存服务器
 var store = sessions.NewCookieStore([]byte("HQBVQKWB@5@"))
 
-// UserBindEmailApi TODO 防止多次请求，改用flash message
+// UserBindEmailApi TODO 为了线程安全，采用redis
 func (a *UsersApi) UserBindEmailApi(c *gin.Context) {
 
 	claims, err := claimx.GetClaim(c)
@@ -40,7 +40,8 @@ func (a *UsersApi) UserBindEmailApi(c *gin.Context) {
 	if bindEmailReq.Code == nil {
 		//第一步，发送验证码
 		code := random.NewCodeSix()
-		go email.NewCode().Send(bindEmailReq.Email, "你的验证码是"+code)
+		//go email.NewCode().Send(bindEmailReq.Email, "你的验证码是"+code)
+		fmt.Println(code)
 		//if err != nil {
 		//	global.Log.Error(err)
 		//	callback.FAIL(res.EmailSendError, res.CodeMsg(res.EmailSendError), c, err)
@@ -54,6 +55,7 @@ func (a *UsersApi) UserBindEmailApi(c *gin.Context) {
 		}
 		session.Values["code"] = code
 		session.Values["email"] = bindEmailReq.Email
+		session.Values["failCount"] = 0
 		session.Values["exp"] = time.Now().Add(60 * time.Second).Unix()
 		//TODO HTTPS
 		session.Options.Secure = false
