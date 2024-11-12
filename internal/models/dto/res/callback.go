@@ -5,7 +5,7 @@ type Response struct {
 	Data any       `json:"data"`
 	Msg  string    `json:"msg"`
 }
-type List struct {
+type ListData struct {
 	ModelList any `json:"model_list"`
 	Count     int `json:"count"`
 }
