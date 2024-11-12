@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 )
 
-func GenerateState(length int) (string, error) {
+func GenerateString(length int) (string, error) {
 	bytes := make([]byte, length)
 	if _, err := rand.Read(bytes); err != nil {
 		return "", err

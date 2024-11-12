@@ -12,7 +12,7 @@ import (
 )
 
 func (a *UsersApi) UserGithubLoginApi(c *gin.Context) {
-	state, err := random.GenerateState(16)
+	state, err := random.GenerateString(16)
 	if err != nil {
 		callback.FAIL(res.SeverError, res.CodeMsg(res.SeverError), c)
 		return
