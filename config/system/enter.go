@@ -8,4 +8,5 @@ type System struct {
 	Upload Upload
 	Redis  Redis
 	Email  Email
+	Github Github
 }

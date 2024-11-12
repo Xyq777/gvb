@@ -25,6 +25,7 @@ func initSystemConfWithEnv(c *config.Config) {
 	EnvConfig.Load("UPLOAD_", &c.System.Upload)
 	EnvConfig.Load("REDIS_", &c.System.Redis)
 	EnvConfig.Load("EMAIL_", &c.System.Email)
+	EnvConfig.Load("GITHUB_", &c.System.Github)
 }
 func initCustomWithToml(c *config.Config) {
 
