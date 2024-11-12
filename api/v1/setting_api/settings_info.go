@@ -1,4 +1,4 @@
-package settings_api
+package setting_api
 
 import (
 	"github.com/gin-gonic/gin"

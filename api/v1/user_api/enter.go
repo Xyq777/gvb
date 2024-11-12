@@ -1,4 +1,4 @@
-package users_api
+package user_api
 
 type UsersApi struct {
 }

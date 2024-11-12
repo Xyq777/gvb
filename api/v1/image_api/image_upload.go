@@ -1,4 +1,4 @@
-package images_api
+package image_api
 
 import (
 	"github.com/gin-gonic/gin"

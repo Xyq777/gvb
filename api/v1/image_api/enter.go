@@ -1,4 +1,4 @@
-package images_api
+package image_api
 
 type ImagesApi struct {
 }
