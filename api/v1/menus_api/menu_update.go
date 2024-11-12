@@ -5,9 +5,9 @@ import (
 	"gvb/internal/callback"
 	"gvb/internal/dao"
 	"gvb/internal/global"
-	"gvb/internal/models"
-	"gvb/internal/models/serializition/req"
-	"gvb/internal/models/serializition/res"
+	dao2 "gvb/internal/models/dao"
+	"gvb/internal/models/dto/req"
+	"gvb/internal/models/dto/res"
 	"strconv"
 )
 
@@ -26,13 +26,13 @@ func (a *MenusApi) MenuUpdateAPi(c *gin.Context) {
 	}
 	//gorm不提供外键的实际实例时，不会操作第三方表
 	//所以需要先清空关联表，在更新
-	menu, count, err := dao.FindWithID(models.MenuModel{}, uint(id))
+	menu, exist, err := dao2.FindWithID(dao2.MenuModel{}, uint(id))
 	if err != nil {
 		global.Log.Error(err)
 		callback.FAIL(res.DatabaseOperateError, res.CodeMsg(res.DatabaseOperateError), c, err)
 		return
 	}
-	if count == 0 {
+	if !exist {
 		callback.FAIL(res.NotFound, res.CodeMsg(res.NotFound), c, err)
 		return
 	}
@@ -43,10 +43,10 @@ func (a *MenusApi) MenuUpdateAPi(c *gin.Context) {
 		callback.FAIL(res.DatabaseOperateError, res.CodeMsg(res.DatabaseOperateError), c, err)
 	}
 	//更新
-	menuBannerList := make([]models.MenuBannerModel, 0)
+	menuBannerList := make([]dao2.MenuBannerModel, 0)
 	for _, sort := range menuReq.ImageSortList {
 		// 由于第三方表有额外字段，大抵只能这样手动添加第三方表
-		menuBannerList = append(menuBannerList, models.MenuBannerModel{
+		menuBannerList = append(menuBannerList, dao2.MenuBannerModel{
 			MenuID:   id,
 			BannerID: sort.ImageID,
 			Sort:     sort.Sort,

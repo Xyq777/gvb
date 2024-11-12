@@ -3,9 +3,9 @@ package flag
 import (
 	"fmt"
 	"gvb/internal/global"
-	"gvb/internal/models"
 	"gvb/internal/models/ctype"
-	"gvb/tools/Encryptor"
+	"gvb/internal/models/dao"
+	"gvb/tools/encryptor"
 )
 
 func CreateUser() {
@@ -20,7 +20,7 @@ func CreateUser() {
 	for true {
 		fmt.Printf("请输入用户名：")
 		fmt.Scan(&userName)
-		count := global.Db.Find(&models.UserModel{}, "user_name = ?", userName).RowsAffected
+		count := global.Db.Find(&dao.UserModel{}, "username = ?", userName).RowsAffected
 		if count != 0 {
 			fmt.Println("用户名已存在")
 			continue
@@ -34,10 +34,10 @@ func CreateUser() {
 	fmt.Scan(&email)
 	fmt.Printf("请输入密码：")
 	fmt.Scan(&password)
-	hashPwd := Encryptor.Md5([]byte(password))
-	err := global.Db.Create(&models.UserModel{
-		NickName:   nickName,
-		UserName:   userName,
+	hashPwd := encryptor.Md5([]byte(password))
+	err := global.Db.Create(&dao.UserModel{
+		Nickname:   nickName,
+		Username:   userName,
 		Password:   hashPwd,
 		Email:      email,
 		Role:       ctype.PermissionAdmin,

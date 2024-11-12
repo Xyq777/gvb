@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gvb/internal/callback"
 	"gvb/internal/global"
-	"gvb/internal/models/serializition/res"
+	"gvb/internal/models/dto/res"
 )
 
 func (a *SettingsApi) SettingsInfoView(c *gin.Context) {

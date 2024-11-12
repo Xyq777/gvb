@@ -3,11 +3,10 @@ package images_api
 import (
 	"github.com/gin-gonic/gin"
 	"gvb/internal/callback"
-	"gvb/internal/dao"
 	"gvb/internal/global"
-	"gvb/internal/models"
-	"gvb/internal/models/serializition/req"
-	"gvb/internal/models/serializition/res"
+	"gvb/internal/models/dao"
+	"gvb/internal/models/dto/req"
+	"gvb/internal/models/dto/res"
 )
 
 func (a ImagesApi) ImageDeleteApi(c *gin.Context) {
@@ -19,7 +18,7 @@ func (a ImagesApi) ImageDeleteApi(c *gin.Context) {
 		return
 	}
 	var deleteReqList req.DeleteReqList = deleteImagesReq
-	imageList, count, err := dao.FindWithIDs(models.BannerModel{}, deleteReqList)
+	imageList, count, err := dao.FindWithIDs(dao.BannerModel{}, deleteReqList)
 	if err != nil {
 		callback.FAIL(res.FailedGetImageList, "数据库查询失败", c, err)
 		return

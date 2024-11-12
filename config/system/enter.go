@@ -6,4 +6,7 @@ type System struct {
 	Mysql  Mysql
 	Jwt    Jwt
 	Upload Upload
+	Redis  Redis
+	Email  Email
+	Github Github
 }

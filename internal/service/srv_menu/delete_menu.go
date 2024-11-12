@@ -4,15 +4,14 @@ import (
 	"errors"
 	"fmt"
 	"gorm.io/gorm"
-	"gvb/internal/dao"
 	"gvb/internal/global"
-	"gvb/internal/models"
-	"gvb/internal/models/serializition/req"
-	"gvb/internal/models/serializition/res"
+	"gvb/internal/models/dao"
+	"gvb/internal/models/dto/req"
+	"gvb/internal/models/dto/res"
 )
 
 func (s MenuSrv) Delete(deleteReq []req.DeleteReq) (*res.Response, error) {
-	menuList, count, err := dao.FindWithIDs(models.MenuModel{}, req.DeleteReqList(deleteReq))
+	menuList, count, err := dao.FindWithIDs(dao.MenuModel{}, req.DeleteReqList(deleteReq))
 	if count != len(deleteReq) {
 		global.Log.Debugln("未找到菜单")
 		response := res.NewResponse(res.NotFound, res.EmptyData, res.CodeMsg(res.NotFound))

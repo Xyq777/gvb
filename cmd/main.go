@@ -15,6 +15,7 @@ func main() {
 	global.Log = core.InitLogger()
 	//初始化数据库
 	global.Db = core.InitGorm()
+	global.Redis = core.ConnectRedis()
 	//读取命令行参数
 	op := flag.Parse()
 	if flag.IsWebStop(op) {

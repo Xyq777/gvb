@@ -3,13 +3,13 @@ package dao
 import (
 	"errors"
 	"gvb/internal/global"
-	"gvb/internal/models"
-	"gvb/internal/models/serializition/req"
+	"gvb/internal/models/dao"
+	"gvb/internal/models/dto/req"
 )
 
-func UpdateImage(req req.UpdateImageNameReq) (*models.BannerModel, error) {
-	image, count, err := FindWithID(models.BannerModel{}, req.ID)
-	if count == 0 {
+func UpdateImage(req req.UpdateImageNameReq) (*dao.BannerModel, error) {
+	image, exist, err := dao.FindWithID(dao.BannerModel{}, req.ID)
+	if !exist {
 		return nil, errors.New("图片不存在")
 	}
 	if err != nil {
