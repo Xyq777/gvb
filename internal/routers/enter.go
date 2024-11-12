@@ -6,14 +6,14 @@ import (
 )
 
 type RouterGroup struct {
-	*gin.Engine
+	*gin.RouterGroup
 }
 
 func InitRouter() *gin.Engine {
 	//gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
-	routerGroup := RouterGroup{router}
+	routerGroup := RouterGroup{router.Group("/api")}
 	routerGroup.GET("/token", middleware.TokenRefresh)
 	routerGroup.SettingsRouter()
 	routerGroup.ImagesRouter()
