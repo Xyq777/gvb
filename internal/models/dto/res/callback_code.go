@@ -22,6 +22,8 @@ const (
 
 	StateNotMatched ErrorCode = 40016
 
+	TagAlreadyExist ErrorCode = 40017
+
 	FailedRewriteToml        ErrorCode = 50000
 	UploadFileFailed         ErrorCode = 50001
 	FailedGetImageList       ErrorCode = 50002
@@ -58,6 +60,8 @@ var codeToMsg = map[ErrorCode]string{
 	SessionExpired:       "验证码过期",
 
 	StateNotMatched: "state不匹配",
+
+	TagAlreadyExist: "标签已存在",
 
 	SeverError:               "服务器错误",
 	DatabaseFailedCreate:     "数据库创建操作失败",

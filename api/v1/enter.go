@@ -1,17 +1,19 @@
 package v1
 
 import (
-	"gvb/api/v1/images_api"
-	"gvb/api/v1/menus_api"
-	"gvb/api/v1/settings_api"
-	"gvb/api/v1/users_api"
+	"gvb/api/v1/image_api"
+	"gvb/api/v1/menu_api"
+	"gvb/api/v1/setting_api"
+	"gvb/api/v1/tag_api"
+	"gvb/api/v1/user_api"
 )
 
 type ApiGroup struct {
-	SettingsApi settings_api.SettingsApi
-	ImagesApi   images_api.ImagesApi
-	MenusApi    menus_api.MenusApi
-	UsersApi    users_api.UsersApi
+	SettingsApi setting_api.SettingsApi
+	ImagesApi   image_api.ImagesApi
+	MenusApi    menu_api.MenusApi
+	UsersApi    user_api.UsersApi
+	TagApi      tag_api.TagApi
 }
 
 var ApiGroupApp = new(ApiGroup)
