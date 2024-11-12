@@ -1,7 +1,6 @@
 package users_api
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"gvb/internal/callback"
 	"gvb/internal/global"
@@ -10,6 +9,7 @@ import (
 	"gvb/internal/models/dto/res"
 	"gvb/internal/service"
 	"gvb/internal/service/srv_github"
+	"gvb/tools/random"
 	"strconv"
 )
 
@@ -20,8 +20,6 @@ func (a *UsersApi) UserGithubLoginCallback(c *gin.Context) {
 		callback.FAIL(res.InvalidParams, res.CodeMsg(res.InvalidParams), c)
 		return
 	}
-	fmt.Println(code)
-	return
 	stateCallback := c.Query("state")
 	if code == "" {
 		callback.FAIL(res.InvalidParams, res.CodeMsg(res.InvalidParams), c)
@@ -30,12 +28,12 @@ func (a *UsersApi) UserGithubLoginCallback(c *gin.Context) {
 	stateLocal, err := c.Cookie("githubState")
 	if err != nil {
 		global.Log.Error(err)
-		//callback.FAIL(res.StateNotMatched, res.CodeMsg(res.StateNotMatched), c, err)
-		//return
+		callback.FAIL(res.StateNotMatched, res.CodeMsg(res.StateNotMatched), c, err)
+		return
 	}
 	if stateCallback != stateLocal {
-		//callback.FAIL(res.StateNotMatched, res.CodeMsg(res.StateNotMatched), c)
-		//return
+		callback.FAIL(res.StateNotMatched, res.CodeMsg(res.StateNotMatched), c)
+		return
 	}
 	githubInfo, err := srv_github.GetGithubInfo(code)
 	if err != nil {
@@ -59,8 +57,14 @@ func (a *UsersApi) UserGithubLoginCallback(c *gin.Context) {
 		callback.OK(dataResp, c)
 		return
 	}
+	password, err := random.GenerateString(16)
+	if err != nil {
+		callback.FAIL(res.SeverError, res.CodeMsg(res.SeverError), c, err)
+		return
+	}
+	userModel.Password = password
 	userModel.Username = strconv.Itoa(githubInfo.Id)
-	userModel.Nickname = githubInfo.Name
+	userModel.Nickname = githubInfo.Login
 	userModel.Avatar = githubInfo.AvatarUrl
 	userModel.SignStatus = ctype.SignGithub
 	err = userModel.Create(global.Db)
