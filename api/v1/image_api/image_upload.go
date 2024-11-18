@@ -47,6 +47,7 @@ func (a ImagesApi) ImagesUploadAPI(c *gin.Context) {
 	uploadType, ok2 := form.Value["type"]
 	if !ok1 || !ok2 {
 		callback.FAIL(res.InvalidParams, "请求字段错误", c, err)
+		return
 	}
 	//判断文件路径是否存在
 	basePath := global.Config.System.Upload.Path

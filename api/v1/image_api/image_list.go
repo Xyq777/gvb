@@ -20,5 +20,5 @@ func (a ImagesApi) ImageListApi(c *gin.Context) {
 		callback.FAIL(res.FailedGetImageList, "获取数据失败", c, err)
 		return
 	}
-	callback.OK(res.List{ModelList: list, Count: count}, c)
+	callback.OK(res.ListData{ModelList: list, Count: count}, c)
 }

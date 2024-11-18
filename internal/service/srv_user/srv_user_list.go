@@ -24,9 +24,9 @@ func (s UserSrv) UserList(page req.Page, role ctype.Role) (*res.Response, error)
 		}
 		userList = append(userList, user)
 	}
-	listData := res.ListRespData{
-		Count: count,
-		List:  userList,
+	listData := res.ListData{
+		Count:     count,
+		ModelList: userList,
 	}
 	resp := res.NewResponse(res.Success, listData, res.CodeMsg(res.Success))
 

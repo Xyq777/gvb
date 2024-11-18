@@ -1,6 +1,5 @@
 package system
 
-import "C"
 import (
 	"fmt"
 )

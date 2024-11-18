@@ -10,7 +10,7 @@ import (
 )
 
 func (a TagApi) TagCreateApi(c *gin.Context) {
-	var tagCreateReq req.TagCreateReq
+	var tagCreateReq req.TagReq
 	err := c.ShouldBind(&tagCreateReq)
 	if err != nil {
 		callback.FAIL(res.InvalidParams, res.CodeMsg(res.InvalidParams), c, err)
