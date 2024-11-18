@@ -9,4 +9,5 @@ type System struct {
 	Redis  Redis
 	Email  Email
 	Github Github
+	ES     ES
 }
