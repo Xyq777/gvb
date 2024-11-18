@@ -21,7 +21,7 @@ type UserModel struct {
 	Role           ctype.Role       `gorm:"size:4;default:1" json:"role"`                                                          // 权限  1 管理员  2 普通用户  3 游客
 	SignStatus     ctype.SignStatus `gorm:"type=smallint(6)" json:"sign_status"`                                                   // 注册来源
 	ArticleModels  []ArticleModel   `gorm:"foreignKey:UserID" json:"-"`                                                            // 发布的文章列表
-	CollectsModels []ArticleModel   `gorm:"many2many:user_collect_models;joinForeignKey:UserID;JoinReferences:ArticleID" json:"-"` // 收藏的文章列表
+	CollectsModels []ArticleModel   `gorm:"many2many:user_collect_models;joinForeignKey:UserID;joinReferences:ArticleID" json:"-"` // 收藏的文章列表
 }
 
 func (u UserModel) Update(tx *gorm.DB) error {
