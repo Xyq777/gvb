@@ -7,8 +7,16 @@ import (
 
 func Makemigrations() {
 	var err error
-	global.Db.SetupJoinTable(&dao.UserModel{}, "CollectsModels", &dao.UserCollectModel{})
-	global.Db.SetupJoinTable(&dao.MenuModel{}, "Banners", &dao.MenuBannerModel{})
+	err = global.Db.SetupJoinTable(&dao.UserModel{}, "CollectsModels", &dao.UserCollectModel{})
+	if err != nil {
+		global.Log.Error("[ error ] 创建数据库表关联失败")
+		return
+	}
+	err = global.Db.SetupJoinTable(&dao.MenuModel{}, "Banners", &dao.MenuBannerModel{})
+	if err != nil {
+		global.Log.Error("[ error ] 创建数据库表关联失败")
+		return
+	}
 	// 生成四张表的表结构
 	err = global.Db.Set("gorm:table_options", "ENGINE=InnoDB").
 		AutoMigrate(
@@ -19,7 +27,6 @@ func Makemigrations() {
 			&dao.CommentModel{},
 			&dao.ArticleModel{},
 			&dao.MenuModel{},
-			&dao.MenuBannerModel{},
 			&dao.FadeBackModel{},
 			&dao.LoginDataModel{},
 		)

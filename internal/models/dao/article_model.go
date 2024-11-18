@@ -1,11 +1,15 @@
 package dao
 
-import "gvb/internal/models/ctype"
+import (
+	"gvb/internal/models/ctype"
+	"time"
+)
 
 type ArticleModel struct {
-	ID        string `json:"id" structs:"id"`                 // es的id
-	CreatedAt string `json:"created_at" structs:"created_at"` // 创建时间
-	UpdatedAt string `json:"updated_at" structs:"updated_at"` // 更新时间
+	ID        uint      `json:"id,omitempty" structs:"id" gorm:"primarykey"`            // es的id
+	CreatedAt time.Time `json:"created_at,omitempty" structs:"created_at"`              // 创建时间
+	UpdatedAt time.Time `json:"updated_at,omitempty" structs:"updated_at"`              // 更新时间
+	DeletedAt time.Time `json:"deleted_at,omitempty" structs:"deleted_at" gorm:"index"` // 删除时间
 
 	Title    string `json:"title" structs:"title"`                // 文章标题
 	Keyword  string `json:"keyword,omit(list)" structs:"keyword"` // 关键字
