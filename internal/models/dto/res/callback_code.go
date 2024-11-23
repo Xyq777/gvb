@@ -24,6 +24,8 @@ const (
 
 	TagAlreadyExist ErrorCode = 40017
 
+	BannerNotExist ErrorCode = 40018
+
 	FailedRewriteToml        ErrorCode = 50000
 	UploadFileFailed         ErrorCode = 50001
 	FailedGetImageList       ErrorCode = 50002
@@ -42,6 +44,10 @@ const (
 	SessionError   ErrorCode = 50013
 
 	GithubLoginFailed ErrorCode = 50014
+
+	MarkdownTransferFailed ErrorCode = 50015
+
+	ElasticsearchOperateError ErrorCode = 50016
 
 	SeverError ErrorCode = 50050
 )
@@ -63,6 +69,8 @@ var codeToMsg = map[ErrorCode]string{
 
 	TagAlreadyExist: "标签已存在",
 
+	BannerNotExist: "轮播图不存在",
+
 	SeverError:               "服务器错误",
 	DatabaseFailedCreate:     "数据库创建操作失败",
 	DatabaseOperateError:     "数据库操作失败",
@@ -76,6 +84,8 @@ var codeToMsg = map[ErrorCode]string{
 	SessionError:   "Session操作失败",
 
 	GithubLoginFailed: "Github登录失败",
+
+	MarkdownTransferFailed: "markdown转换失败",
 }
 
 func CodeMsg(code ErrorCode) string {
