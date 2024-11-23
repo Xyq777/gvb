@@ -5,14 +5,9 @@ import (
 	"gvb/internal/models/dao"
 )
 
-func Makemigrations() {
-	var err error
-	err = global.Db.SetupJoinTable(&dao.UserModel{}, "CollectsModels", &dao.UserCollectModel{})
-	if err != nil {
-		global.Log.Error("[ error ] 创建数据库表关联失败")
-		return
-	}
-	err = global.Db.SetupJoinTable(&dao.MenuModel{}, "Banners", &dao.MenuBannerModel{})
+func MakeMigrations() {
+
+	err := global.Db.SetupJoinTable(&dao.MenuModel{}, "Banners", &dao.MenuBannerModel{})
 	if err != nil {
 		global.Log.Error("[ error ] 创建数据库表关联失败")
 		return
@@ -25,7 +20,6 @@ func Makemigrations() {
 			&dao.MessageModel{},
 			&dao.UserModel{},
 			&dao.CommentModel{},
-			&dao.ArticleModel{},
 			&dao.MenuModel{},
 			&dao.FadeBackModel{},
 			&dao.LoginDataModel{},

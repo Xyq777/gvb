@@ -32,7 +32,7 @@ func IsWebStop(option Option) bool {
 // SwitchOption 根据命令执行不同的函数
 func SwitchOption(option Option) {
 	if option.M {
-		Makemigrations()
+		MakeMigrations()
 		return
 	}
 	if option.U {
