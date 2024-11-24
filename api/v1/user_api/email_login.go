@@ -17,7 +17,7 @@ func (a *UsersApi) UserEmailLoginApi(c *gin.Context) {
 	var userSrv = service.Srv.NewUserSrv(c)
 	resp, err := userSrv.EmailLogin(userLoginReq)
 	if err != nil {
-		callback.FAIL(res.DatabaseOperateError, res.CodeMsg(res.DatabaseOperateError), c, err)
+		callback.FAIL(resp.Code, resp.Msg, c, err)
 		return
 	}
 	callback.OK(resp.Data, c)
