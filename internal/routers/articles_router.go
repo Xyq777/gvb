@@ -10,4 +10,5 @@ func (r *RouterGroup) ArticleRouter() {
 	g.Use(middleware.JwtAuth())
 	articleApi := v1.ApiGroupApp.ArticleApi
 	g.POST("", articleApi.CreateArticleApi)
+	g.POST("/list", articleApi.ArticleListView)
 }

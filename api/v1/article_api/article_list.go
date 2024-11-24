@@ -11,7 +11,7 @@ import (
 
 func (ArticleApi) ArticleListView(c *gin.Context) {
 	var page req.Page
-	if err := c.ShouldBindQuery(&page); err != nil {
+	if err := c.ShouldBind(&page); err != nil {
 		callback.FAIL(res.InvalidParams, res.CodeMsg(res.InvalidParams), c, err)
 		return
 	}
