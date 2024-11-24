@@ -36,8 +36,9 @@ func CommList(key string, page, limit int) (list []res.ArticleListRes, count int
 			}).Do(context.Background())
 	if err != nil {
 		logrus.Error(err.Error())
-		return
+		return nil, 0, err
 	}
+	//TODO more detailed error handle
 	count = len(resp.Hits.Hits) //搜索到结果总条数
 	demoList := make([]res.ArticleListRes, 0)
 	for _, hit := range resp.Hits.Hits {
@@ -45,11 +46,13 @@ func CommList(key string, page, limit int) (list []res.ArticleListRes, count int
 		data, err := hit.Source_.MarshalJSON()
 		if err != nil {
 			logrus.Error(err.Error())
+			count--
 			continue
 		}
 		err = json.Unmarshal(data, &model)
 		if err != nil {
 			logrus.Error(err)
+			count--
 			continue
 		}
 		model.ID = *hit.Id_
