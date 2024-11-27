@@ -2,6 +2,8 @@ package dao
 
 import (
 	"context"
+	"errors"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 	"gvb/internal/global"
 	"time"
 )
@@ -43,7 +45,15 @@ func (m ArticleModel) Index() string {
 }
 
 func (m ArticleModel) CreateInES() error {
-	_, err := global.ES.Index(m.Index()).
+	exist, err := m.IsExist(m.Title)
+	if err != nil {
+		global.Log.Error(err)
+		return err
+	}
+	if exist {
+		return errors.New("article same title already exist")
+	}
+	_, err = global.ES.Index(m.Index()).
 		Document(m).
 		Do(context.Background())
 	if err != nil {
@@ -52,4 +62,21 @@ func (m ArticleModel) CreateInES() error {
 	}
 	return nil
 
+}
+func (m ArticleModel) IsExist(title string) (bool, error) {
+	const QueryField = "title"
+	resp, err := global.ES.Search().
+		Index(m.Index()).
+		Query(
+			&types.Query{
+				Term: map[string]types.TermQuery{QueryField: {Value: &title}},
+			},
+		).
+		Do(context.Background())
+	if err != nil {
+		global.Log.Error(err)
+		return false, err
+	}
+
+	return resp.Hits.Total.Value > 0, nil
 }
