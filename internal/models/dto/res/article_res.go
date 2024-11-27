@@ -14,3 +14,7 @@ type ArticleListRes struct {
 	BannerUrl string `json:"banner_url" structs:"banner_url"` // 文章封面
 
 }
+type ArticleCalenderRes struct {
+	Day   string `json:"day"`
+	Count int    `json:"count"`
+}
