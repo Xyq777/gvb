@@ -18,3 +18,12 @@ type ArticleCalenderRes struct {
 	Day   string `json:"day"`
 	Count int    `json:"count"`
 }
+type ArticleListByTagRes struct {
+	TagName     string
+	Count       int
+	ArticleList []ArticleByTagResp
+}
+type ArticleByTagResp struct {
+	Title string `json:"title"`
+	ID    string `json:"id"`
+}

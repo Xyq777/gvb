@@ -12,4 +12,6 @@ func (r *RouterGroup) ArticleRouter() {
 	g.POST("", articleApi.CreateArticleApi)
 	g.POST("/list", articleApi.ArticleListView)
 	g.GET("/calender", articleApi.GetArticleCalender)
+	g.GET("/list/tag", articleApi.GetArticleListByTag)
+
 }
