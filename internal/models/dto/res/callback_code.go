@@ -26,6 +26,9 @@ const (
 
 	BannerNotExist ErrorCode = 40018
 
+	ArticleAlreadyExist ErrorCode = 40019
+	ArticleNotExist     ErrorCode = 40020
+
 	FailedRewriteToml        ErrorCode = 50000
 	UploadFileFailed         ErrorCode = 50001
 	FailedGetImageList       ErrorCode = 50002
@@ -71,6 +74,9 @@ var codeToMsg = map[ErrorCode]string{
 
 	BannerNotExist: "轮播图不存在",
 
+	ArticleAlreadyExist: "文章已存在",
+	ArticleNotExist:     "文章不存在",
+
 	SeverError:               "服务器错误",
 	DatabaseFailedCreate:     "数据库创建操作失败",
 	DatabaseOperateError:     "数据库操作失败",
@@ -85,7 +91,8 @@ var codeToMsg = map[ErrorCode]string{
 
 	GithubLoginFailed: "Github登录失败",
 
-	MarkdownTransferFailed: "markdown转换失败",
+	MarkdownTransferFailed:    "markdown转换失败",
+	ElasticsearchOperateError: "Elasticsearch操作失败",
 }
 
 func CodeMsg(code ErrorCode) string {

@@ -15,3 +15,15 @@ type ArticleReq struct {
 type ArticleRemoveReq struct {
 	IDList []string `json:"id_list"`
 }
+type ArticleUpdateReq struct {
+	ID       string   `json:"id"`        // 指定ID
+	Title    string   `json:"title"`     // 文章标题
+	Brief    string   `json:"brief"`     // 文章简介
+	Content  string   `json:"content"`   // 文章内容
+	Category string   `json:"category"`  // 文章分类
+	Source   string   `json:"source"`    // 文章来源
+	Link     string   `json:"link"`      // 原文链接
+	BannerID uint     `json:"banner_id"` // 文章封面id
+	Tags     []string `json:"tags"`      // 文章标签
+
+}

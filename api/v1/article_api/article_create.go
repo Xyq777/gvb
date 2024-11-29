@@ -90,6 +90,16 @@ func (a ArticleApi) CreateArticleApi(c *gin.Context) {
 		BannerUrl:    bannerUrl,
 		Tags:         articleCreateReq.Tags,
 	}
+	exist, err = articleModel.IsExist()
+	if err != nil {
+		global.Log.Error(err)
+		callback.FAIL(res.DatabaseOperateError, res.CodeMsg(res.DatabaseOperateError), c, err)
+		return
+	}
+	if exist {
+		callback.FAIL(res.ArticleAlreadyExist, res.CodeMsg(res.ArticleAlreadyExist), c)
+		return
+	}
 
 	err = articleModel.CreateInES()
 	if err != nil {
