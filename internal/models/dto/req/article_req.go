@@ -12,3 +12,6 @@ type ArticleReq struct {
 	BannerID uint        `json:"banner_id"`                               // 文章封面id
 	Tags     ctype.Array `json:"tags"`                                    // 文章标签
 }
+type ArticleRemoveReq struct {
+	IDList []string `json:"id_list"`
+}

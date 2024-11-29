@@ -11,6 +11,7 @@ func (r *RouterGroup) ArticleRouter() {
 	articleApi := v1.ApiGroupApp.ArticleApi
 	g.POST("", articleApi.CreateArticleApi)
 	g.POST("/list", articleApi.ArticleListView)
+	g.DELETE("", articleApi.RemoveArticleApi)
 	g.GET("/calender", articleApi.GetArticleCalender)
 	g.GET("/list/tag", articleApi.GetArticleListByTag)
 
