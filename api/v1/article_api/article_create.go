@@ -14,7 +14,7 @@ import (
 )
 
 func (a ArticleApi) CreateArticleApi(c *gin.Context) {
-	var articleCreateReq req.ArticleRequest
+	var articleCreateReq req.ArticleReq
 	if err := c.ShouldBindJSON(&articleCreateReq); err != nil {
 		callback.FAIL(res.InvalidParams, res.CodeMsg(res.InvalidParams), c, err)
 		return

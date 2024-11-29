@@ -2,7 +2,7 @@ package req
 
 import "gvb/internal/models/ctype"
 
-type ArticleRequest struct {
+type ArticleReq struct {
 	Title    string      `json:"title" binding:"required" msg:"文章标题必填"`   // 文章标题
 	Brief    string      `json:"brief"`                                   // 文章简介
 	Content  string      `json:"content" binding:"required" msg:"文章内容必填"` // 文章内容
