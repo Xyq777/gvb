@@ -36,10 +36,10 @@ func FAIL(code res.ErrorCode, msg string, c *gin.Context, option ...any) {
 			return
 
 		}
-		if !ok {
-			Result(code, option[0], msg, c)
-			return
-		}
+
+		Result(code, option[0], msg, c)
+		return
+
 	}
 	if len(option) == 2 {
 		f0, ok0 := option[0].(error)
@@ -70,5 +70,5 @@ func FailWithOrigin(code res.ErrorCode, msg string, err error, c *gin.Context) {
 	Result(code, struct{}{}, msg+err.Error(), c)
 }
 func isDev() bool {
-	return global.Config.System.App.LogLevel == "debug"
+	return global.Config.System.App.LogLevel == "dev"
 }
